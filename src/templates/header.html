@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <input type="checkbox" name="menu" id="menu" class="nav__menu-checkbox" hidden>
+            <nav class="nav d-flex--center-btw">
+                <div class="nav__logoContainer d-flex--center">
+                    <a href="index.html" class="nav__logo">
+                        <span class="nav__logo__text">Milberger</span><br>
+                        <span class="nav__logo__addText">renovation</span>
+                    </a>
+                    <p class="nav__logo__descriprion">Авторские ремонты.<br>От идеи до реализации. <br>В
+                        Санкт-Петербурге и ЛО.</p>
+                </div>
+                <ul class="nav__items d-flex j-center">
+                    <li class="nav__item"><a title="О компании" href="#home" class="nav__item__link">О компании</a></li>
+                    <li class="nav__item"><a title="Расчет стоимости" href="#cost" class="nav__item__link active">Расчет стоимости</a></li>
+                    <li class="nav__item"><a title="Наши проекты" href="#projects" class="nav__item__link">Наши проекты</a></li>
+                    <li class="nav__item"><a title="Преимущества" href="#benefits" class="nav__item__link">Преимущества</a></li>
+                    <li class="nav__item"><a title="Контакты" href="#discuss" class="nav__item__link">Контакты</a></li>
+                </ul>
+                <label for="menu" class="nav__menu d-flex a-center j-end">
+                    <div class="nav__burger"></div>
+                </label>
+                <div class="nav__messangers nav__contacts d-flex a-end">
+                    <p class="nav__messangers__text">Напишите нам <br>в мессенджер</p>
+                    <div class="nav__messangers__links">
+                        <a href="+74959297006" class="nav__messangers__link d-inline-block">
+                            <img src="../img/icons/send.png" alt="Telegram" class="nav__messangers__icon">
+                        </a>
+                        <a href="+74959297006" class="nav__messangers__link d-inline-block">
+                            <img src="../img/icons/wh.png" alt="Telegram" class="nav__messangers__icon">
+                        </a>
+                    </div>
+                </div>
+                <div class="nav__telBlock nav__contacts d-flex">
+                    <p class="nav__telBlock__text">Звоните ежедневно с 9:00-20:00</p>
+                    <a href="tel:+74959297006" class="nav__telBlock__tel">+7 (495) 929-70-06</a>
+                </div>
+            </nav>
+        </div>
+    </header>

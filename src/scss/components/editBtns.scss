@@ -1,0 +1,337 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+@use 'article' as *;
+
+@mixin widgetBtns {
+
+    & .add-before,
+    & .add-after {
+        position: absolute;
+        left: 50%;
+        font-size: 18px;
+        color: transparentize($color, .5);
+        background-color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        visibility: hidden;
+        opacity: 0;
+        transition: .2s;
+        z-index: 10;
+    }
+
+    & .add-before {
+        top: 0;
+        transform: translate(-50%, -60%);
+    }
+
+    & .add-after {
+        bottom: 0;
+        transform: translate(-50%, 45%);
+    }
+
+    &:hover>.add-after,
+    &:hover>.add-before {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.editbtns {
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+
+    button {
+        padding: 0 8px;
+        position: relative;
+        cursor: pointer;
+
+        &[data-command="insertUnorderedList"].active, &[data-command="insertOrderedList"].active {
+            background-color: transparentize($color, $amount: .5);
+        }
+    }
+
+    .openDropdownBtn[data-type="selector"] {
+        min-width: 175px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border: 1px solid transparentize($color, .5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn_dropdown {
+        position: relative;
+
+        .dropdown_result {
+            margin-right: 10px;
+        }
+    }
+
+    .btn_dropdown_list {
+        background-color: white;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
+        position: absolute;
+        top: 100%;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+
+        &.visible {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        button {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            width: 100%;
+            height: 100%;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        li {
+            transition: .2s;
+            cursor: pointer;
+
+            &:hover {
+                background-color: transparentize($light-gray, .8);
+            }
+
+            &.active {
+                background-color: transparentize($color, .5);
+            }
+        }
+    }
+
+    .btn_h1 {
+        font-size: $fs__heading--normal;
+
+        @include setTabletStyles {
+            font-size: $fs__heading--H1-mobile;
+        }
+    }
+
+    .btn_h2 {
+        font-size: 28px;
+
+        @include setTabletStyles {
+            font-size: $fs__heading--H1-mobile;
+        }
+    }
+
+    .btn_h3 {
+        @extend %subheading--normal;
+    }
+
+    .article-cols {
+        border: 1px dotted gray;
+        gap: 5px;
+        padding: 5px;
+        height: 30px;
+        width: 50px;
+    }
+}
+
+.admin__CM__editableItem__content {
+
+    h1,
+    h2,
+    h3,
+    section {
+        border: 1px dotted transparent;
+
+        &:hover {
+            border-color: gray;
+        }
+    }
+
+    div {
+        position: relative;
+        transition: .2s;
+
+        &:not(.col):not(.widget) {
+            @include widgetBtns;
+            border: 1px dotted transparent;
+
+            &:hover {
+                border-color: gray;
+            }
+
+            &:not(.article-cols):hover {
+                padding: 8px;
+            }
+
+            &.article-cols:hover {
+                padding: 15px;
+            }
+        }
+
+        .col {
+            flex: 1 1 0;
+            border: 1px dotted gray;
+        }
+
+        &:hover div:not(.col):not(.widget) {
+            margin: 15px 0;
+        }
+    }
+
+    .imgWrap {
+        position: relative;
+        transition: border .2s;
+        @include widgetBtns;
+        border: 2px solid transparent;
+
+        &.hiddenUI {
+            border-color: transparent !important;
+
+            & .resize-btn,
+            & .widget-style,
+            & .add-before,
+            & .add-after {
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+        }
+
+        .resize-btn {
+            width: 30px;
+            max-width: 50%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background-color: rgb(156 137 193);
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            cursor: nwse-resize;
+            visibility: hidden;
+            opacity: 0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(20%, 20%) rotate(90deg);
+            transition: .2s;
+        }
+
+        .widget-style {
+            background: rgba(57, 20, 132, 0.5);
+            gap: 10px;
+            padding: 5px;
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            flex-direction: row;
+            visibility: hidden;
+            opacity: 0;
+            transition: .2s;
+
+            &:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 130%;
+                background-color: transparent;
+            }
+
+            .styleBtn {
+                width: 40px;
+                height: 35px;
+                background: white;
+                gap: 3px;
+                padding: 5px;
+                cursor: pointer;
+            }
+
+            .widgetFakeLine {
+                background: rgba(156, 137, 193, 0.4);
+                height: 2px;
+            }
+
+            .widgetFakeImg {
+                border: 2px solid rgb(156, 137, 193);
+                flex: 1 1;
+                max-width: 80%;
+                height: 100%;
+            }
+
+            .widgetFakeFlex {
+                gap: 2px;
+                flex: 1;
+
+                &.inline {
+                    align-items: flex-end;
+
+                    .widgetFakeImg {
+                        flex-basis: 70%;
+                    }
+
+                    .widgetFakeLine {
+                        flex: 1 1 30%;
+                    }
+                }
+
+                &.block {
+                    justify-content: center;
+
+                    .widgetFakeImg {
+                        flex-basis: 100%;
+                    }
+                }
+
+                &.left,
+                &.right {
+                    height: 12px;
+                    gap: 5px;
+                }
+
+                &.left {
+                    flex-direction: row-reverse;
+                }
+
+                .linesWrap.d-flex--col.widget {
+                    flex: 1 1;
+                    justify-content: space-between;
+                }
+            }
+
+        }
+
+        &:hover,
+        &.active {
+            border-color: transparentize($color, .5);
+
+            & .resize-btn,
+            & .widget-style {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+}
+
+.editbtns .col, .admin__CM__editableItem__content .col {
+    flex: 1 1 0;
+    border: 1px dotted gray;
+}
+
+.hiddenInput {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    left: 0;
+    top: 0;
+}
+
+input[type=file],
+input[type=file]::-webkit-file-upload-button {
+    cursor: pointer;
+}

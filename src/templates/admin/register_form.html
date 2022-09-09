@@ -1,0 +1,23 @@
+<section id="register">
+    <div class="container__content login__container">
+        <form method="POST" class="login__form transparent d-flex--col j-end a-center" id="login__form" novalidate>
+            <h3 class="discuss__form__subheading bold">Регистрация</h3>
+            <div class="checkout__inputWrap" hidden>
+                <input type="email" value=" <%= email %>" name="email" placeholder="Email"
+                    class="checkout__inputWrap__input email" hidden>
+            </div>
+            <div class="checkout__inputWrap">
+                <input type="password" name="password" id="password" required
+                    class="checkout__inputWrap__input password" placeholder="Пароль" value="">
+            </div>
+            <div class="checkout__inputWrap">
+                <input type="password" name="password_reply" id="password_reply" required
+                    class="checkout__inputWrap__input password" placeholder="Повторите пароль" value="">
+            </div>
+            <div class="checkout__btnWrap btn--accent" title="Зарегистрироваться">
+                <input type="submit" value="Зарегистрироваться" class="btn--checkout">
+                <p class="err_msg">jib,rf</p>
+            </div>
+        </form>
+    </div>
+</section>

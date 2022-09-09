@@ -1,0 +1,74 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+$horizontalPadding: 30px;
+
+section {
+    position: relative;
+}
+
+
+@include setDeskStyles {
+    :root {
+        --horizontalPadding: 80px;
+    }
+}
+
+@include setDeskStylesXL {
+    :root {
+        --horizontalPadding: calc((100vw - #{$contentWidth__Desk}) / 2);
+    }
+}
+
+@include setTabletStyles {
+    :root {
+        --horizontalPadding: 80px;
+    }
+}
+
+@include setMobileStyles {
+    :root {
+        --horizontalPadding: 30px;
+    }
+}
+
+@mixin containerIndents ($verticalPadding) {
+    padding: $verticalPadding var(--horizontalPadding);
+}
+
+.container {
+    @include containerIndents(0px);
+
+    &__content {
+        @include containerIndents(50px);
+
+        #home & {
+            padding-top: 40px;
+            @include setTabletStyles {
+                padding-bottom: 0;
+            }
+        }
+
+        #cost & {
+            padding-top: 44px;
+            @include setTabletStyles {
+                padding-top: 100px;
+            }
+        }
+    }
+}
+
+#home {
+    padding-top: 112px;
+}
+
+.footer__container {
+    padding-top: 61px;
+    padding-bottom: 39px;
+
+    @include setTabletStyles {
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}
+

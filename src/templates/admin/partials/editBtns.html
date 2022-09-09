@@ -1,0 +1,101 @@
+<div class="editbtns d-flex">
+    <div class="btn_dropdown">
+        <button class="btn openDropdownBtn" data-type="selector"><span class="dropdown_result">Абзац</span><i class="fa-solid fa-caret-down"></i></button>
+        <ul class="btn_dropdown_list">
+            <li class="active">
+                <button data-type="p">Абзац</button>
+            </li>
+            <li>
+                <button data-type="section">Секция</button>
+            </li>
+            <li>
+                <button data-type="div">Блок</button>
+            </li>
+            <li>
+                <button class="btn_h1" data-type="h1">Заголовок H1</button>
+            </li>
+            <li>
+                <button class="btn_h2" data-type="h2">Заголовок H2</button>
+            </li>
+            <li>
+                <button class="btn_h3" data-type="h3">Заголовок H3</button>
+            </li>
+        </ul>
+    </div>
+    <div class="btn_dropdown">
+        <button class="btn openDropdownBtn fa-solid fa-table-columns" data-type="columns" title="Разделить на колонки"></button>
+        <ul class="btn_dropdown_list">
+            <li>
+                <button data-type="2">
+                    <div class="two-col d-flex article-cols">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button data-type="3">
+                    <div class="two-col d-flex article-cols">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button data-type="4">
+                    <div class="two-col d-flex article-cols">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                    </div>
+                </button>
+            </li>
+        </ul>
+    </div>
+    <button class="btn fas fa-bold" title="Жирный" data-command="bold"></button>
+    <button class="btn fas fa-italic" title="Курсив" data-command="italic"></button>
+    <button class="btn fas fa-underline" title="Подчёркнутый" data-command="underline"></button>
+    <button class="btn fas fa-strikethrough" title="Зачёркнутый" data-command="strikethrough"></button>
+    <button class="btn fas fa-superscript" title="Верхний индекс" data-command="superscript"></button>
+    <button class="btn fas fa-subscript" title="Нижний индекс" data-command="subscript"></button>
+    <button class="btn fas fa-list-ul" title="Маркированный список" data-command="insertUnorderedList"></button>
+    <button class="btn fas fa-list-ol" title="Нумерованный список" data-command="insertOrderedList"></button>
+
+    <button class="btn fas fa-quote-right" title="Цитата"></button>
+    <button class="btn far fa-image" title="Изображение">
+        <input type="file" name="img" class="hiddenInput" data-type="image">
+    </button>
+    <button class="btn fas fa-link" title="Ссылка"></button>
+    <button class="btn fas fa-unlink" title="Удаление ссылки" data-command="unlink"></button>
+    <button class="btn fas fa-align-left" title="по левому краю" data-command="justifyLeft"></button>
+    <button class="btn fas fa-align-center" title="по центру" data-command="justifyCenter"></button>
+    <button class="btn fas fa-align-right" title="по правому краю" data-command="justifyRight"></button>
+    <button class="btn fas fa-align-justify" title="по ширине" data-command="justifyFull"></button>
+    <select class="toolbar-font">
+        <option selected="selected" disabled="disabled">Шрифт</option>
+        <option value="arial">Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="georgia">Georgia</option>
+        <option value="impact">Impact</option>
+        <option value="roboto">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="verdana">Verdana</option>
+    </select>
+    <select class="toolbar-size">
+        <option selected="selected" disabled="disabled">Размер</option>
+        <option value="1">10px</option>
+        <option value="2">12px</option>
+        <option value="3">14px</option>
+        <option value="4">16px</option>
+        <option value="5">18px</option>
+        <option value="6">21px</option>
+        <option value="7">26px</option>
+    </select>
+    <span>Цвет</span> <input class="toolbar-color" type="color" value="#ff0000">
+    <span>Фон</span> <input class="toolbar-bg" type="color" value="#ffff00">
+    <br>
+    <button class="btn fas fa-undo" title="Отмена" data-command="undo"></button>
+    <button class="btn fas fa-redo" title="Повтор" data-command="redo"></button>
+</div>

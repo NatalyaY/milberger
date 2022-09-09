@@ -1,0 +1,168 @@
+@use '../variables' as *;
+@use '_mixins' as *;
+
+%-btn {
+    border-radius: $border-radius__UI;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 16px;
+    line-height: 26px;
+    position: relative;
+
+    &:hover {
+        border-radius: $border-radius__UI--hover;
+    }
+
+    &::before {
+        display: block;
+        content: attr(title);
+        font-weight: bold;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+    }
+}
+
+.d-flex {
+    display: flex;
+
+    &--col {
+        @extend .d-flex;
+        flex-direction: column;
+    }
+
+    &--center {
+        @extend .d-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &--center-btw {
+        @extend .d-flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.d-inline-block {
+    display: inline-block;
+}
+
+.j-end {
+    justify-content: flex-end;
+}
+
+.j-center {
+    justify-content: center;
+}
+
+.j-between {
+    justify-content: space-between;
+}
+
+.a-end {
+    align-items: flex-end;
+}
+
+.a-start {
+    align-items: flex-start;
+}
+
+.a-center {
+    align-items: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.bold-color {
+    font-weight: bold;
+    color: $color;
+}
+
+.bold-color-desk {
+    @include setDeskStyles {
+        font-weight: bold;
+        color: $color;
+    }
+}
+
+.color-desk {
+    @include setDeskStyles {
+        color: $color;
+    }
+}
+
+.accent-color {
+    color: $accent;
+}
+
+.btn--accent {
+    @extend %-btn;
+    text-decoration: none;
+    background-color: $accent;
+    color: $text-color-basic1;
+    position: relative;
+    z-index: 2;
+    transform: scaleY(1);
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 25%;
+        top: 0;
+        height: 100%;
+        width: 32px;
+        background-color: rgb(255, 255, 255);
+        opacity: 0.3;
+        transform: skewX(-35deg) translateX(50%);
+        z-index: -1;
+        transition: .05s;
+    }
+
+    &:hover {
+        font-weight: bold;
+        background-color: $accent-hover;
+        opacity: 1;
+        transform: scaleY(1.089);
+
+        & span {
+            display: block;
+            transform: scaleY(.9);
+        }
+    }
+
+    &:active {
+        background-color: $accent;
+
+        &::after {
+            left: 55%;
+        }
+    }
+}
+
+.btn--normal {
+    @extend %-btn;
+    border: 2px solid $stroke-gray;
+
+    &:hover {
+        font-weight: bold;
+        background-color: $stroke-gray;
+    }
+
+    &:active {
+        font-weight: initial;
+        background-color: initial;
+    }
+}
+
+.color {
+    background-color: $color;
+    color: $white;
+}
+
+.white {
+    background-color: $white;
+    color: $dark-gray;
+}

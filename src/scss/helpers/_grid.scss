@@ -1,0 +1,19 @@
+$colNum: 12;
+$colGutter: 30px;
+$colWidth: 65px;
+$colOffset: 165px;
+$colOffsetMobile: 30px;
+$contentWidth__Desk: 1110px;
+
+// margins
+
+$section-mb: 50px;
+
+:root {
+    --horizontalPadding: null;
+}
+
+//breakpoints
+$mobile: 630px;
+$tablet: 768px;
+$desk: 1200px;

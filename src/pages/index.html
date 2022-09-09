@@ -1,0 +1,737 @@
+<%= _.template(require('../templates/header.html'))({title: "Milberger" }) %>
+    <main>
+        <section id="home">
+            <div class="container__content home__container">
+                <div class="home__text__block d-flex--col">
+                    <p class="home__text__lined">Точно в срок</p>
+                    <h1 class="home__heading">Выполним <span class="bold-color-desk">дизайнерский</span> ремонт в вашей
+                        квартире. <span class="bold-color-desk">Воплотим</span> любую идею.</h1>
+                    <p class="home__text__additional">Предоставим расширенную гарантию 5 лет</p>
+                    <a href="#cost" class="home__btn btn--accent"><span>Рассчитать стоимость</span></a>
+                    <ul class="home__items d-flex--col">
+                        <li class="home__item">Не морочим голову</li>
+                        <li class="home__item">Не затягиваем сроки</li>
+                        <li class="home__item">Не рискуем репутацией</li>
+                    </ul>
+                </div>
+                <div class="home__gallery gallery">
+                    <div id="js-gallery__items"></div>
+                    <div class="home__gallery__nav gallery__nav d-flex--center">
+                        <button class="gallery__nav-btn btn--prev"></button>
+                        <button class="gallery__nav-btn btn--next"></button>
+                    </div>
+                    <div class="home__gallery__links d-flex--col">
+                        <a href="tel:+78129052222" class="home__gallery__link d-flex a-center j-end">
+                            <span class="home__gallery__link__info">Позвонить нам</span>
+                            <div class="home__gallery__link__iconWrap">
+                                <svg class="home__gallery__link__icon">
+                                    <use xlink:href="../img/icons/icons.svg#call">
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="" class="home__gallery__link d-flex a-center j-end">
+                            <span class="home__gallery__link__info">Скачать договор</span>
+                            <div class="home__gallery__link__iconWrap">
+                                <svg class="home__gallery__link__icon">
+                                    <use xlink:href="../img/icons/icons.svg#document">
+                                </svg>
+                            </div>
+                        </a>
+                        <a href="#cost" class="home__gallery__link d-flex a-center j-end">
+                            <span class="home__gallery__link__info">Рассчитать стоимость</span>
+                            <div class="home__gallery__link__iconWrap">
+                                <svg class="home__gallery__link__icon">
+                                    <use xlink:href="../img/icons/icons.svg#edit">
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section id="cost" class="color">
+            <div class="container__content">
+                <h2 class="cost__heading">Рассчитайте предварительную <br><span class="accent-color">стоимость Вашего
+                        ремонта</span></h2>
+                <hr class="cost__heading__hr">
+                <p class="cost__subheading">Ответьте всего на 6 вопросов</p>
+                <div class="cost__content">
+                    <div class="cost__info white d-flex--col a-center j-end">
+                        <div class="cost__info__imgWrap">
+                            <img src="img/boss.png" alt="Денис Мильбергер" class="cost__info__img">
+                        </div>
+                        <h3 class="cost__info__name bold">Денис Милбергер</h3>
+                        <p class="cost__info__position">Руководитель студии</p>
+                        <p class="cost__info__text">Здравствуйте, я понимаю насколько для вас может быть важен вопрос
+                            стоимости ремонта.<br>
+                            Мы подумали об этом, и сделали удобную форму на нашем сайте, чтобы вы могли рассчитать
+                            предварительную стоимость работ и
+                            черновых материалов.<br>Воспользуйтесь ей!</p>
+                        <div class="cost__info__benefits d-flex--col">
+                            <h4 class="cost__info__benefitsHeading bold">В конце теста Вы получите:</h4>
+                            <div class="cost__info__benefit d-flex a-center">
+                                <img src="../img/icons/estimate.png" alt="Смета" class="benefit__icon">
+                                <p class="benefit__text"><span class="bold">Предварительную смету</span><br>Вашего
+                                    проекта</p>
+                            </div>
+                            <div class="cost__info__benefit d-flex a-center">
+                                <img src="../img/icons/price.png" alt="Прайс" class="benefit__icon">
+                                <p class="benefit__text"><span class="bold">Прайс-лист стоимости
+                                        работ</span><br>*Перечень работ со стоимостью нормо-часа</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cost__form form__container white d-flex--col">
+                        <div class="cost__form__progress gallery__progress d-flex j-center">
+                            <div class="progress__item gallery__progress__item d-flex--center">1</div>
+                            <div class="progress__item gallery__progress__item d-flex--center">2</div>
+                            <div class="progress__item gallery__progress__item d-flex--center">3</div>
+                            <div class="progress__item gallery__progress__item d-flex--center">4</div>
+                            <div class="progress__item gallery__progress__item d-flex--center">5</div>
+                            <div class="progress__item gallery__progress__item d-flex--center">6</div>
+                        </div>
+                        <form method="POST" class="form normal" id="cost__form" data-name="расчет стоимости" novalidate>
+                            <fieldset class="form__item gallery__item form__where" data-name="where">
+                                <h3 class="form__item__heading">Где необходимо выполнить ремонт?</h3>
+                                <div class="form__item__inputs">
+                                    <label class="form__item__label new d-flex--col a-center">
+                                        <input type="radio" name="where" value="квартира в новостройке" hidden class="hidden" required>
+                                        <div class="label__img img--new"></div>
+                                        <p class="label">Квартира в новостройке</p>
+                                    </label>
+                                    <label class="form__item__label old d-flex--col a-center">
+                                        <input type="radio" name="where" value="квартира во вторичном жилье" hidden class="hidden" required>
+                                        <div class="label__img img--old"></div>
+                                        <p class="label">Квартира во вторичном жилье</p>
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form__item gallery__item form__sizes" data-name="sizes">
+                                <div class="form__item__inputs">
+                                    <div class="inputWrap">
+                                        <h3 class="form__item__heading">Какая площадь объекта?</h3>
+                                        <div class="form__item__rangeContainer rangeSize d-flex a-end">
+                                            <div class="range__min range__legend"><span class="js-range__min"></span>
+                                                м<sup>2</sup></div>
+                                            <div class="range d-flex--col">
+                                                <div class="range__value"><span class="js-range__value"></span>
+                                                    м<sup>2</sup></div>
+                                                <input type="range" name="size" max="300" min="0" step="1" data-add="м<sup>2</sup>" value="0"
+                                                    class="form__range" required>
+                                            </div>
+                                            <div class="range__max range__legend"><span class="js-range__max"></span>
+                                                м<sup>2</sup></div>
+                                        </div>
+                                    </div>
+                                    <div class="inputWrap">
+                                        <h3 class="form__item__heading">Какая высота потолков?</h3>
+                                        <div class="form__item__rangeContainer rangeHeight d-flex a-end">
+                                            <div class="range__min range__legend"><span class="js-range__min"></span> м
+                                            </div>
+                                            <div class="range d-flex--col">
+                                                <div class="range__value"><span class="js-range__value"></span> м</div>
+                                                <input type="range" name="height" max="5" min="1" step=".1" data-add="м" value="1"
+                                                    class="form__range" required>
+                                            </div>
+                                            <div class="range__max range__legend"><span class="js-range__max"></span> м
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form__item gallery__item form__budget" data-name="budget">
+                                <h3 class="form__item__heading">Какой у вас бюджет на ремонт?</h3>
+                                <div class="form__item__inputs customRadio">
+                                    <label class="form__item__label">
+                                        <input type="radio" name="budget" value="до 1 млн рублей" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">До 1 млн рублей</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="budget" value="до 3 млн рублей" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">До 3 млн рублей</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="budget" value="до 10 млн рублей" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">До 10 млн рублей</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="budget" value="хочу обсудить это" hidden class="hidden"
+                                            required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">Хочу обсудить это</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form__item gallery__item form__date" data-name="date">
+                                <h3 class="form__item__heading">Когда вы планируете начать работы?</h3>
+                                <div class="form__item__inputs customRadio">
+                                    <label class="form__item__label">
+                                        <input type="radio" name="date" value="в течение 1-2 недель" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">В течение 1-2 недель</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="date" value="в течении месяца" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">В течении месяца</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="date" value="в текущем году" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">В текущем году</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form__item gallery__item form__design" data-name="design">
+                                <h3 class="form__item__heading">У вас есть дизайн-проект?</h3>
+                                <div class="form__item__inputs customRadio">
+                                    <label class="form__item__label">
+                                        <input type="radio" name="design" value="да" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">Да</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="design" value="нет" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">Нет</p>
+                                        </div>
+                                    </label>
+                                    <label class="form__item__label">
+                                        <input type="radio" name="design" value="нет, мне нужен дизайн&#8209проект" hidden class="hidden" required>
+                                        <div class="visibleRadio visibleRadio--withText label">
+                                            <p class="label__text">Нет, мне нужен дизайн&#8209проект</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </fieldset>
+                            <fieldset class="form__item gallery__item form__checkout">
+                                <div class="form__item__inputs customRadio">
+                                    <fieldset class="form__checkout__messenger d-flex--col" data-name="messenger">
+                                        <h3 class="form__item__heading">Куда вам удобнее получить расчет и бонусы?</h3>
+                                        <div class="form__checkout__messengerContainer d-flex j-center">
+                                            <label class="form__checkout__messenger__radioWrap">
+                                                <input type="radio" name="checkout__messenger" value="телефон" hidden
+                                                    class="hidden">
+                                                <div class="visibleRadio visibleRadio--noText label"
+                                                    data-title="Телефон">
+                                                    <svg class="checkout__messenger__icon">
+                                                        <use xlink:href="../img/icons/icons.svg#phone">
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                            <label class="form__checkout__messenger__radioWrap">
+                                                <input type="radio" name="checkout__messenger" value="Telegram" hidden
+                                                    class="hidden">
+                                                <div class="visibleRadio visibleRadio--noText label"
+                                                    data-title="Telegram">
+                                                    <svg class="checkout__messenger__icon">
+                                                        <use xlink:href="../img/icons/icons.svg#tg">
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                            <label class="form__checkout__messenger__radioWrap">
+                                                <input type="radio" name="checkout__messenger" value="Viber" hidden
+                                                    class="hidden">
+                                                <div class="visibleRadio visibleRadio--noText label" data-title="Viber">
+                                                    <svg class="checkout__messenger__icon">
+                                                        <use xlink:href="../img/icons/icons.svg#viber">
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                            <label class="form__checkout__messenger__radioWrap">
+                                                <input type="radio" name="checkout__messenger" value="WatsApp" hidden
+                                                    class="hidden">
+                                                <div class="visibleRadio visibleRadio--noText label"
+                                                    data-title="WatsApp">
+                                                    <svg class="checkout__messenger__icon">
+                                                        <use xlink:href="../img/icons/icons.svg#wa">
+                                                    </svg>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset class="form__checkout__contacts d-flex--col" data-name="contacts">
+                                        <div class="checkout__inputWrap">
+                                            <input type="text" value="" name="name" placeholder="Введите Ваше имя"
+                                                class="checkout__inputWrap__input name">
+                                        </div>
+                                        <div class="checkout__inputWrap">
+                                            <input type="tel" name="phone" id="phone" required
+                                                class="checkout__inputWrap__input phone"
+                                                placeholder="Введите Ваш номер телефона" value=""
+                                                data-mask="+7 (___) ___-__-__"
+                                                pattern="\+7\s?[\(]?[0-9]{3}[\)]?\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                                        </div>
+                                        <div class="checkout__btnWrap btn--accent" title="Получить расчет">
+                                            <input type="submit" value="Получить расчет"
+                                                class="form__checkout__btn--checkout btn--checkout">
+                                        </div>
+                                        <label class="checkout__policyWrap d-flex j-center a-start">
+                                            <input type="checkbox" class="hiden" hidden required>
+                                            <div class="checkout__policyCustomCheckbox"></div>
+                                            <p class="checkout__policyText">Вы соглашаетесь с <a
+                                                    href="#">условиями</a><br> обработки
+                                                персональных данных</p>
+                                        </label>
+                                    </fieldset>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <div class="cost__form__buttons gallery__nav j-end">
+                            <button class="cost__form__btn btn--normal gallery__nav-btn btn--prev"
+                                title="Назад">Назад</button>
+                            <button class="cost__form__btn btn--accent gallery__nav-btn btn--next"
+                                title="Далее">Далее</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section>
+            <div class="container__content" id="benefits">
+                <div class="benefits__content">
+                    <h2 class="benefits__heading"><span class="color-desk">Почему</span> вам стоит
+                        <br><span class="bold-color">выбрать нас?</span>
+                    </h2>
+                    <div class="benefits__text">
+                        <h6 class="benefits__text__heading"><span class="bold-color">Milberger</span> – это
+                            командная
+                            работа на результат.
+                        </h6>
+                        <p class="benefits__text__description">Здравствуйте, меня зовут Денис Милбергер, я
+                            руководитель студии авторских ремнотов. Хочу вам рассказать про наш подход к
+                            работе.</p>
+                        <p class="benefits__text__description">Мы работает с 2010 года и за это время
+                            выполнили более 100 объектов. Вам может показаться, что объектов не так много, но
+                            мы и не гонимся за их количеством.<br>К каждому проекту у нас индивидуальный подход и
+                            каждым из них мы можем гордится.<br>Я
+                            готов ручаться за добросовестное отношение к вашей задаче или вернуть деньги, если
+                            результат вас не устроит.</p>
+                    </div>
+                    <div class="benefits__list">
+                        <h3 class="benefits__list__header bold">Почему мы:</h3>
+                        <ul class="benefits__list__items colorBenefits withMarker d-flex--col">
+                            <li class="benefits__list__item">
+                                <input type="radio" name="benefit" id="benefit1" hidden class="benefit__radio">
+                                <label for="benefit1" class="benefit__tab">
+                                    <span class="benefit__title">Отчетность</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько для вас важен вопрос
+                                    стоимости. Эта простая форма с несколькими вопросами позволит нам</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="benefit" id="benefit2" hidden class="benefit__radio">
+                                <label for="benefit2" class="benefit__tab">
+                                    <span class="benefit__title">Поэтапная оплата</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько для вас важен вопрос
+                                    стоимости. Эта простая форма с несколькими вопросами позволит нам</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="benefit" id="benefit3" hidden class="benefit__radio">
+                                <label for="benefit3" class="benefit__tab">
+                                    <span class="benefit__title">Скидки на материалы</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько для вас важен вопрос
+                                    стоимости. Эта простая форма с несколькими вопросами позволит нам</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="benefit" id="benefit4" hidden class="benefit__radio">
+                                <label for="benefit4" class="benefit__tab">
+                                    <span class="benefit__title">Узкие специалисты</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько для вас важен вопрос
+                                    стоимости. Эта простая форма с несколькими вопросами позволит нам</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="benefits__video video-container">
+                    <div id="player"></div>
+                    <img src="../img/poster.png" alt="Видео" class="video__poster">
+                </div>
+            </div>
+        </section>
+        <section id="projects">
+            <div class="container__content">
+                <h2 class="projects__heading"><span class="bold color-desk">Реализованные нами проекты</span>
+                    разнообразны и позволят вам оценить наши возможности. Ознакомтесь!</h2>
+                <hr class="projects__heading__hr">
+                <div class="projects__content d-flex">
+                    <div id="js-projects"></div>
+                </div>
+            </div>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section id="design" class="color">
+            <div class="container__content design__container form__container">
+                <div class="design__imgWrap">
+                    <img src="../img/girl.png" alt="" class="design__img">
+                    <div class="design__imgWrap__caption">
+                        <h6 class="imgWrap__name bold">Анна Кавецкая</h6>
+                        <p class="imgWrap__position">Ведущий дизайнер</p>
+                    </div>
+                </div>
+                <div class="design__text">
+                    <h2 class="design__heading">У вас еще нет <span class="bold accent-color">дизайн-проекта</span>?
+                    </h2>
+                    <p class="design__subheading">Предложим детально проработанный план будущего ремонта</p>
+                    <div class="design__benefits__list">
+                        <h3 class="design__benefits__list__header bold">Что Вы получите:</h3>
+                        <ul
+                            class="design__benefits__list__items whiteBenefits withMarker withMarker--white d-flex--col">
+                            <li class="benefits__list__item">
+                                <input type="radio" name="design__benefit" id="design__benefit1" hidden
+                                    class="benefit__radio">
+                                <label for="design__benefit1" class="benefit__tab">
+                                    <span class="benefit__title">технический проект</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                    для вас важен вопрос стоимости. Эта простая форма с несколькими вопросами позволит
+                                    нам максимально</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="design__benefit" id="design__benefit2" hidden
+                                    class="benefit__radio">
+                                <label for="design__benefit2" class="benefit__tab">
+                                    <span class="benefit__title">дизайн проект</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                    для вас важен вопрос стоимости. Эта простая форма с несколькими вопросами позволит
+                                    нам максимально</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="design__benefit" id="design__benefit3" hidden
+                                    class="benefit__radio">
+                                <label for="design__benefit3" class="benefit__tab">
+                                    <span class="benefit__title">Подборка мебели и аксессуаров</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                    для вас важен вопрос стоимости. Эта простая форма с несколькими вопросами позволит
+                                    нам максимально</p>
+                            </li>
+                            <li class="benefits__list__item">
+                                <input type="radio" name="design__benefit" id="design__benefit4" hidden
+                                    class="benefit__radio">
+                                <label for="design__benefit4" class="benefit__tab">
+                                    <span class="benefit__title">Авторский надзор</span>
+                                </label>
+                                <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                    для вас важен вопрос стоимости. Эта простая форма с несколькими вопросами позволит
+                                    нам максимально</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <form method="POST" class="design__form transparent d-flex--col j-end a-center" data-name="дизайн проект" id="design__form"
+                    novalidate>
+                    <img src="../img/form__posters.png" alt="" class="design__form__img">
+                    <h3 class="design__form__heading">Получите каталог<br>наших <span class="bold">дизайн
+                            проектов</span>
+                    </h3>
+                    <p class="design__form__subheading"><span class="bold">Заполните форму ниже</span>, и мы пришлем
+                        Вам<br>полный каталог дизайн проектов</p>
+                    <div class="checkout__inputWrap">
+                        <input type="text" value="" name="name" placeholder="Ваше имя"
+                            class="checkout__inputWrap__input name">
+                    </div>
+                    <div class="checkout__inputWrap">
+                        <input type="tel" name="phone" id="phone" required class="checkout__inputWrap__input phone"
+                            placeholder="Ваш телефон" value="" data-mask="+7 (___) ___-__-__"
+                            pattern="\+7\s?[\(]?[0-9]{3}[\)]?\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                    </div>
+                    <div class="checkout__btnWrap btn--accent" title="Получить каталог">
+                        <input type="submit" value="Получить каталог" class="btn--checkout">
+                    </div>
+                    <label class="checkout__policyWrap d-flex j-center a-start">
+                        <input type="checkbox" class="hiden" hidden required>
+                        <div class="checkout__policyCustomCheckbox"></div>
+                        <p class="checkout__policyText">Вы соглашаетесь с <a href="#">условиями</a><br> обработки
+                            персональных данных</p>
+                    </label>
+                </form>
+            </div>
+        </section>
+        <section id="smart">
+            <div class="container__content smart">
+                <div class="smart__content">
+                    <div class="smart__content__text">
+                        <h2 class="smart__heading">Сделаем ваш дом<br><span class="bold-color">удобнее и
+                                безопаснее</span><br>
+                            с системами автоматизации</h2>
+                        <p class="smart__text">При вашем желании мы интегрируем в ваш дом автоматизированные системы
+                            безопасности и управления. По средствам приложения
+                            вы всегда будите знать, что вашему имуществу ничего не угрожает.</p>
+                    </div>
+                    <img src="../img/smart.png" alt="Система автоматизации" class="smart__content__img">
+                </div>
+                <div class="smart__benefits">
+                    <div class="smart__benefits__benefit">
+                        <img src="../img/icons/fire.png" alt="" class="smart__benefits__benefit__icon">
+                        <h4 class="smart__benefits__benefit__title bold-color">Пожарная безопасность</h4>
+                        <p class="smart__benefits__benefit__description">Установим анализаторы дыма и автоматическое
+                            уведомление службы пожарной охраны.</p>
+                    </div>
+                    <div class="smart__benefits__benefit">
+                        <img src="../img/icons/security.png" alt="" class="smart__benefits__benefit__icon">
+                        <h4 class="smart__benefits__benefit__title bold-color">Охрана помещения</h4>
+                        <p class="smart__benefits__benefit__description">Установим охранные датчики на окна и двери, а
+                            также видеоналюдение при необходимости.</p>
+                    </div>
+                    <div class="smart__benefits__benefit">
+                        <img src="../img/icons/water.png" alt="" class="smart__benefits__benefit__icon">
+                        <h4 class="smart__benefits__benefit__title bold-color">Контроль протечек</h4>
+                        <p class="smart__benefits__benefit__description">Установим датчики протечки в “мокрых зонах”, а
+                            также электроклапаны на подаче воды.</p>
+                    </div>
+                    <div class="smart__benefits__benefit">
+                        <img src="../img/icons/wind.png" alt="" class="smart__benefits__benefit__icon">
+                        <h4 class="smart__benefits__benefit__title bold-color">Управление климатом</h4>
+                        <p class="smart__benefits__benefit__description">Реализуем управление системой вентилции и
+                            кондиционировая воздуха из приложения.</p>
+                    </div>
+                </div>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section id="faq" class="color">
+            <div class="container__content faq__container">
+                <div class="faq__formContainer form__container">
+                    <h2 class="faq__formContainer__heading">Оставьте заявку<br>
+                        <span class="accent-color bold">на замер</span>
+                    </h2>
+                    <p class="faq__formContainer__text">Предложим детально
+                        проработанный
+                        план будущего ремонта</p>
+                    <form method="POST" class="faq__form normal noBorder d-flex--col j-end a-center" data-name="замер" id="faq__form"
+                        novalidate>
+                        <div class="checkout__inputWrap">
+                            <input type="tel" name="phone" id="phone" required class="checkout__inputWrap__input phone"
+                                placeholder="Ваш телефон" value="" data-mask="+7 (___) ___-__-__"
+                                pattern="\+7\s?[\(]?[0-9]{3}[\)]?\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                        </div>
+                        <div class="checkout__btnWrap btn--accent" title="Отправить">
+                            <input type="submit" value="Отправить" class="btn--checkout">
+                        </div>
+                        <label class="checkout__policyWrap d-flex j-center a-start">
+                            <input type="checkbox" class="hiden" hidden required>
+                            <div class="checkout__policyCustomCheckbox"></div>
+                            <p class="checkout__policyText">Вы соглашаетесь с <a href="#">условиями</a><br> обработки
+                                персональных данных</p>
+                        </label>
+                    </form>
+                </div>
+                <div class="faq__imgContainer">
+                    <img src="../img/faq.png" alt="" class="faq__img">
+                    <div class="faq__imgContainer__caption">
+                        <h6 class="imgWrap__name bold">Денис Кавецкий</h6>
+                        <p class="imgWrap__position">Бригадир</p>
+                    </div>
+                </div>
+                <div class="faq__benefits__list">
+                    <h3 class="faq__benefits__list__header">Часто
+                        задаваемые <span class="accent-color bold">вопросы</span></h3>
+                    <ul class="faq__benefits__list__items whiteBenefits d-flex--col">
+                        <li class="benefits__list__item">
+                            <input type="radio" name="faq__benefits" id="faq__benefits1" hidden class="benefit__radio">
+                            <label for="faq__benefits1" class="benefit__tab">
+                                <span class="benefit__title">Сколько дней срок выполнения работ?</span>
+                            </label>
+                            <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально
+                                Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально</p>
+                        </li>
+                        <li class="benefits__list__item">
+                            <input type="radio" name="faq__benefits" id="faq__benefits2" hidden class="benefit__radio">
+                            <label for="faq__benefits2" class="benefit__tab">
+                                <span class="benefit__title">Сколько стоят работы?</span>
+                            </label>
+                            <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально
+                                Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально</p>
+                        </li>
+                        <li class="benefits__list__item">
+                            <input type="radio" name="faq__benefits" id="faq__benefits3" hidden class="benefit__radio">
+                            <label for="faq__benefits3" class="benefit__tab">
+                                <span class="benefit__title">Какие гарантии вы предоставляете?</span>
+                            </label>
+                            <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально
+                                Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально</p>
+                        </li>
+                        <li class="benefits__list__item">
+                            <input type="radio" name="faq__benefits" id="faq__benefits4" hidden class="benefit__radio">
+                            <label for="faq__benefits4" class="benefit__tab">
+                                <span class="benefit__title">Как получить смету?</span>
+                            </label>
+                            <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально
+                                Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально</p>
+                        </li>
+                        <li class="benefits__list__item">
+                            <input type="radio" name="faq__benefits" id="faq__benefits5" hidden class="benefit__radio">
+                            <label for="faq__benefits5" class="benefit__tab">
+                                <span class="benefit__title">Как вы работатЕ?</span>
+                            </label>
+                            <p class="benefit__hidden">Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально
+                                Здравствуйте, я понимаю насколько
+                                для вас важен вопрос стоимости.
+                                Эта простая форма с несколькими вопросами позволит нам максимально</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section id="articles">
+            <div class="container__content">
+                <h2 class="articles__heading">Другие <span class="bold-color">статьи</span></h2>
+                <hr class="normal__hr">
+                <article class="articles__container">
+                    <div id="js-articles"></div>
+                </article>
+            </div>
+            <svg class="shape">
+                <use xlink:href="../img/icons/icons.svg#shape">
+            </svg>
+        </section>
+        <section>
+            <div class="container__content hiddenTextContainer">
+                <h2 class="seo__heading">Текст <span class="bold-color">для SEO</span></h2>
+                <hr class="normal__hr">
+                <div class="hidden__content seo__content" data-enabled="1">
+                    <p>Многие столетия человек вырабатывал технологии с целью преобразовать окружающую его среду,
+                        сделать ее комфортнее и
+                        эстетичнее. Можно смело сказать, что развитие техники началось именно с развития строительства.
+                        И сегодня возможности
+                        современной науки и производства обеспечивают качественный скачок в строительных работах. Наша
+                        компания ставит себе цели
+                        идти в ногу со временем и предлагать своим потребителям услуги в соответствии с новейшими
+                        достижениями.
+                        Давно известные и технологически устоявшиеся строительные процессы приобретают новые черты и
+                        предоставляют новые
+                        возможности. Так, наша компания выполняет штукатурку стен механизированным способом с помощью
+                        оборудования немецкой
+                        фирмы PFT.</p>
+                    <p>Многие столетия человек вырабатывал технологии с целью преобразовать окружающую его среду,
+                        сделать ее комфортнее и
+                        эстетичнее. Можно смело сказать, что развитие техники началось именно с развития строительства.
+                        И сегодня возможности
+                        современной науки и производства обеспечивают качественный скачок в строительных работах. Наша
+                        компания ставит себе цели
+                        идти в ногу со временем и предлагать своим потребителям услуги в соответствии с новейшими
+                        достижениями.
+                        Давно известные и технологически устоявшиеся строительные процессы приобретают новые черты и
+                        предоставляют новые
+                        возможности. Так, наша компания выполняет штукатурку стен механизированным способом с помощью
+                        оборудования немецкой
+                        фирмы PFT.</p>
+                </div>
+                <a href="#" class="moreLink seo__moreLink d-flex--center">
+                    <div class="more__iconWrap d-flex--center">
+                        <img src="../img/icons/down.png" alt="" class="more__icon">
+                    </div>
+                </a>
+            </div>
+        </section>
+        <section id="discuss">
+            <div class="container__content discuss__container form__container">
+                <div class="discuss__contacts">
+                    <h2 class="discuss__heading">Давайте обсудим<br><span class="bold-color">Ваш ремонт</span></h2>
+                    <div class="discuss__contactsWrap">
+                        <div class="discuss__contactItem post">
+                            <h5 class="discuss__contactItem__heading bold">Почта:</h5>
+                            <a href="mailto:corp.milberger@gmail.com"
+                                class="discuss__contactItem__link">corp.milberger@gmail.com</a>
+                        </div>
+                        <div class="discuss__contactItem office">
+                            <h5 class="discuss__contactItem__heading bold">Офис:</h5>
+                            <p class="discuss__contactItem__text">Лиговский пр. 571, оф 12<br>Санкт-Петербург</p>
+                        </div>
+                        <div class="discuss__contactItem messengers">
+                            <h5 class="discuss__contactItem__heading bold">Мессенджеры:</h5>
+                            <div class="discuss__contactItem__linksWrap">
+                                <a href="#" class="discuss__contactItem__link d-flex--center">
+                                    <img src="img/icons/send.png" alt="Telegram"
+                                        class="discuss__contactItem__link__icon">
+                                    <span>Telegram</span>
+                                </a>
+                                <a href="#" class="discuss__contactItem__link d-flex--center">
+                                    <img src="img/icons/wh.png" alt="WatsApp" class="discuss__contactItem__link__icon">
+                                    <span>WatsApp</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="discuss__contactItem phone">
+                            <h5 class="discuss__contactItem__heading bold">Телефон:</h5>
+                            <a href="tel:+78128052222" class="discuss__contactItem__link">+7 (812) 805-22-22</a>
+                        </div>
+                    </div>
+                </div>
+                <form method="POST" class="discuss__form normal d-flex--col j-end a-center" data-name="обсудить ремонт" id="discuss__form"
+                    novalidate>
+                    <h3 class="discuss__form__subheading bold">Звоните сейчас</h3>
+                    <h3 class="discuss__form__heading bold-color">+7 (812) 905-22-22</h3>
+                    <p class="discuss__form__text">или заполните форму<br>
+                        и мы перезвоним Вам</p>
+                    <div class="checkout__inputWrap">
+                        <input type="text" value="" name="name" placeholder="Ваше имя"
+                            class="checkout__inputWrap__input name">
+                    </div>
+                    <div class="checkout__inputWrap">
+                        <input type="tel" name="phone" id="phone" required class="checkout__inputWrap__input phone"
+                            placeholder="Ваш телефон" value="" data-mask="+7 (___) ___-__-__"
+                            pattern="\+7\s?[\(]?[0-9]{3}[\)]?\s?\d{3}[-]?\d{2}[-]?\d{2}">
+                    </div>
+                    <div class="checkout__btnWrap btn--accent" title="Получить каталог">
+                        <input type="submit" value="Получить каталог" class="btn--checkout">
+                    </div>
+                    <label class="checkout__policyWrap d-flex j-center a-start">
+                        <input type="checkbox" class="hiden" hidden required>
+                        <div class="checkout__policyCustomCheckbox"></div>
+                        <p class="checkout__policyText">Вы соглашаетесь с <a href="#">условиями</a><br> обработки
+                            персональных данных</p>
+                    </label>
+                </form>
+            </div>
+        </section>
+    </main>
+<%= require('../templates/footer.html') %>

@@ -1,0 +1,19 @@
+<% let arr = data.users.type ? data.users[data.users.type] : data.users; %>
+
+    <% if ((arr.length)&&(!arr.findIndex((item) => item.hasOwnProperty('email')))) { %>
+        <% for (let i=0; i < arr.length; i++) { %>
+            <% if (arr[i].email) { %>
+                <div class="admin__content__item" data-id="<%- arr[i]._id %>">
+                    <span class="admin__content__item__field" data-type="email"><%- arr[i].email %></span>
+                    <button class="admin__content__item__btn" data-type="edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="admin__content__item__btn" data-type="delete">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            <% }; %>
+        <% }; %>
+    <% } else { %>
+        <span class="admin__content__emptyText">Нет пользователей</span>
+    <% }; %>

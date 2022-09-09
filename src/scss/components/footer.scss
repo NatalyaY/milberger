@@ -1,0 +1,217 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+.footer__container {
+    @extend %flex-adaptive;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+
+    & a {
+        text-decoration: none;
+    }
+}
+
+.footer__logoContainer {
+    @include setWidthAdaptive(2);
+    min-width: 112px;
+    flex: 0 0 auto;
+    font-size: 22px;
+    letter-spacing: -2px;
+    line-height: 20px;
+
+    @include setTabletStyles {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .footer__logo__addText {
+        @extend %showOnlyInMobile;
+    }
+}
+
+.footer__links {
+    @include setWidthAdaptive(4);
+    gap: 30px;
+    flex: 0 0 auto;
+
+    @include setStylesTabletBeforeDeskXL {
+        flex: 1;
+    }
+
+    @include setTabletStyles {
+        gap: 22px;
+    }
+
+    &__list {
+        @include setDeskWidth(6);
+        gap: 16px;
+
+        @include setTabletStyles {
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        &__heading {
+            font-size: 16px;
+        }
+
+        &__link {
+            font-size: 14px;
+            opacity: 0.5;
+            letter-spacing: -0.3px;
+        }
+    }
+
+}
+
+.footer__contacts {
+    @include setWidthAdaptive(5);
+    gap: 37px;
+    flex: 1 1 auto;
+
+    @include setTabletStyles {
+        gap: 20px;
+        align-items: flex-start;
+    }
+
+    @include setStylesTabletBeforeDeskXL {
+        width: 100%;
+        gap: 30px;
+        margin-top: 20px;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .footer__contacts__messengers {
+        text-align: left;
+
+        @include setStylesTabletBeforeDeskXL {
+            flex: 0 auto;
+        }
+
+        @include setDeskStylesXL {
+            text-align: right;
+        }
+
+        &__heading {
+            margin-bottom: 5px;
+            font-size: 16px;
+
+            @include setTabletStyles {
+                margin-bottom: 10px;
+            }
+        }
+
+    }
+
+    .footer__contacts__form {
+        flex-wrap: wrap;
+        text-align: left;
+        gap: 30px;
+        width: 100%;
+        flex: 1;
+
+        @include setDeskStylesXL {
+            text-align: right;
+        }
+
+        @include setStylesTabletBeforeDeskXL {
+            justify-content: flex-start;
+
+            .checkout__inputWrap,
+            .checkout__btnWrap {
+                flex: 1 1 0;
+            }
+        }
+
+        @include setTabletStyles {
+            gap: 10px;
+        }
+
+        &__heading {
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .checkout__inputWrap,
+        .checkout__btnWrap {
+            width: auto;
+            margin-top: -14px;
+
+            @include setTabletStyles {
+                margin-top: 0;
+                width: 100%;
+            }
+        }
+
+        .checkout__inputWrap {
+            @include setTabletStyles {
+                background-color: white;
+
+                &__input {
+                    color: $dark-gray;
+                    background-image: url(../img/icons/phone--color.png);
+
+                    &::placeholder {
+                        color: $dark-gray;
+                    }
+                }
+            }
+        }
+
+        .checkout__btnWrap::before {
+            padding-left: 35px;
+            padding-right: 35px;
+        }
+
+        .btn--checkout {
+            padding-left: 35px;
+            padding-right: 35px;
+        }
+
+        .checkout__policyWrap {
+            width: 100%;
+            @extend %showOnlyInMobile;
+        }
+    }
+}
+
+.footer__credentials {
+    width: 100%;
+    @extend %flex-adaptive;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 30px;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: white;
+
+        @include setTabletStyles {
+            left: 50%;
+            width: 200vw;
+            background: rgba(234, 234, 234, 0.5);
+            transform: translate(-50%, 50%);
+        }
+    }
+
+    .footer__credentials__dev {
+        opacity: 0.5;
+
+        @include setTabletStyles {
+            order: 2;
+        }
+
+        & a {
+            text-decoration: underline;
+        }
+    }
+}

@@ -1,0 +1,83 @@
+<% let arr = data.articles || data.projects %>
+<% let emptyText = data.articles ? 'Нет статей' : 'Нет проектов' %>
+
+    <% if (arr.length) { %>
+        <% for (let i=0; i < arr.length; i++) { %>
+            <% const img = arr[i].previewImg || "../img/placeholder.png";  %>
+                <div class="admin__content__item" data-id="<%- arr[i]._id %>" data-originId="<%- arr[i].originid %>">
+                    <div class="admin__content__item__main">
+                        <div class="admin__CM__imgWrap">
+                            <img src="<%- img %>" alt="" class="admin__CM__img admin__content__item__field" data-type="previewImg">
+                        </div>
+                        <span class="admin__CM__id bold">
+                            <% if (arr[i].hasOwnProperty("originid")) { %>
+                                id: <%- arr[i].originUUID %> (черновик)
+                            <% } else { %>
+                                id: <%- arr[i].UUID %>
+                            <% }; %>
+                        </span>
+                        <div class="admin__content__item__status" data-type="publish" data-value="<%- arr[i].publish %>">
+                            <span class="admin__content__item__status-text published">Опубликовано</span>
+                            <span class="admin__content__item__status-text unpublished">Не опубликовано</span>
+                            <button class="admin__content__item__status-publishBtn admin__content__item__status__btn" data-value="true">Опубликовать</button>
+                            <button class="admin__content__item__status-unpublishBtn admin__content__item__status__btn" data-value="false">Снять с публикации</button>
+                        </div>
+                        <div class="admin__content__item__textFields">
+                            <% if (arr[i].title) { %>
+                            <span class="admin__content__item__field bold" data-type="title"><%- arr[i].title || ' ' %></span>
+                            <% }; %>
+                            <% if (arr[i].characters) { %>
+                                <div class="admin__content__item__characters">
+                                    <% for (const key in arr[i].characters) { %>
+                                        <% const character =  arr[i].characters[key] %>
+                                        <div class="admin__content__item__wrap">
+                                            <svg class="character__icon">
+                                                <use xlink:href="../img/icons/icons.svg#<%- character.icon %>">
+                                                </use>
+                                            </svg>
+                                            <div class="admin__content__item__field" data-type="character-<%- character.icon %>"><%= character.value || ' ' %></div>
+                                            <span class="character__input__addText"><%= character.addText || ' ' %></span>
+                                        </div>
+                                    <% }; %>
+                                </div>
+                            <% }; %>
+                            <% if (arr[i].video) { %>
+                                <div class="admin__content__item__wrap">
+                                    <span class="admin__content__item__fieldText bold">ID видео с Youtube: </span>
+                                    <span class="admin__content__item__field" data-type="video"><%= arr[i].video || ' ' %></span>
+                                </div>
+                            <% }; %>
+                            <% if (arr[i].hasOwnProperty("gallery")) { %>
+                                <label class="admin__content__item__checkLabel">
+                                    <input type="checkbox" name="gallery" data-type="gallery" hidden id="gallery" class="admin__content__item__checkbox"
+                                    <% if (arr[i].gallery == true) { %>
+                                        checked>
+                                    <% } else { %>
+                                        >
+                                    <% }; %>
+                                    <div class="admin__content__item__customCheckbox"></div>
+                                    <span class="admin__content__item__checkboxText">Показывать в галерее</span>
+                                </label>
+                            <% }; %>
+                            <% if (arr[i].description) { %>
+                            <div class="admin__content__item__field bold" data-type="description"><%= arr[i].description || ' ' %></div>
+                            <% }; %>
+                            <% if (arr[i].body) { %>
+                            <div class="admin__content__item__field" data-type="body"><%= arr[i].body || ' ' %></div>
+                            <% }; %>
+                        </div>
+                    </div>
+                    <div class="admin__content__item__btns d-flex--center">
+                        <button class="admin__content__item__btn" data-type="edit">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="admin__content__item__btn" data-type="delete">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                </div>
+
+        <% }; %>
+    <% } else { %>
+        <span class="admin__content__emptyText"><%= emptyText %></span>
+    <% }; %>

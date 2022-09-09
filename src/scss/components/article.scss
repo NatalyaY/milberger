@@ -1,0 +1,111 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+.admin__CM__editableItem__content,
+.article,
+.admin__content__item__field {
+    b {
+        font-weight: bold;
+    }
+
+    i {
+        font-style: italic;
+    }
+
+    ol,
+    ul {
+        list-style-position: inside;
+
+        li::marker {
+            color: $color;
+        }
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol {
+        list-style-type: decimal;
+    }
+
+    .article-cols {
+        gap: 30px;
+        flex-wrap: wrap;
+
+        @include setTabletStyles {
+            flex-direction: column;
+        }
+    }
+
+    .imgWrap {
+        border-radius: 32px;
+        position: relative;
+        user-select: none;
+        height: 100%;
+
+        align-items: center;
+        justify-content: center;
+
+        &[data-style="inline"] {
+            display: inline-flex;
+            vertical-align: middle;
+        }
+
+        &[data-style="block"] {
+            display: flex;
+        }
+
+        &[data-style="left"] {
+            display: inline-flex;
+            float: left;
+            margin-right: 30px;
+            width: 50%;
+
+            @include setTabletStyles {
+                float: none;
+                width: 100%;
+                margin: 0;
+            }
+        }
+
+        &[data-style="right"] {
+            display: inline-flex;
+            float: right;
+            margin-left: 30px;
+            width: 50%;
+
+            @include setTabletStyles {
+                float: none;
+                width: 100%;
+                margin: 0;
+            }
+        }
+    }
+
+    img {
+        border-radius: inherit;
+        width: 100%;
+    }
+
+    .clearfix:after {
+        content: '';
+        display: table;
+        clear: both;
+        visibility: hidden;
+    }
+
+}
+
+.admin__CM__editableItem__content,
+.article {
+    section {
+        padding: 50px 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+        padding-bottom: 50px;
+    }
+}

@@ -1,0 +1,10 @@
+<section class="admin__section">
+    <div class="container__content admin__container">
+        <% var path='../src/templates/admin/tabs/' + tab %>
+            <% try { %>
+                <%= include(path) %>
+            <% } catch (e) { %>
+                <h1>Нет такой страницы <%= e %></h1>
+            <% } %>
+    </div>
+</section>

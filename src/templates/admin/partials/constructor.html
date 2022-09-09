@@ -1,0 +1,101 @@
+
+<div class="constructor" data-type="<%= page %>" data-id="<%= id %>"
+    <% if (originId != '') { %>
+        data-originId="<%- originId %>">
+    <% } else { %>
+    >
+    <% }; %>
+    <a href="#" class="constructor__backBtn">Назад</a>
+    <h2 class="admin__CM__heading admin__content__header__title bold-color"><%= header %></h2>
+    <div class="admin__CM__container">
+        <% for (const key in editables) { %>
+
+            <% if (key=='group_title' ) { %>
+                <h3 class="admin__CM__editableItemsGroup__heading bold"><%= editables[key] %></h3>
+            <% } else { %>
+
+                <% if ( editables[key].group == 'start' ) { %>
+                    <div class="admin__CM__editableItemsGroup<% if (editables[key].type == 'character' ) { %> charactersGroup"><% } else { %>">
+                        <% }; %>
+                <% }; %>
+
+                <% if ( editables[key].group=='end outer' ) { %>
+                    </div>
+                <% }; %>
+
+                <div class="admin__CM__editableItem" data-type="<%= key %>">
+                    <% if ( editables[key].type=='input' ) { %>
+                        <label for="<%= key %>" class="admin__CM__editableItem__heading bold"><%= editables[key].text %>:</label>
+                        <input class="admin__CM__editableItem__content" data-id="<%= key %>" value="<%= editables[key].value(item, key) %>">
+                    <% } else if ( editables[key].type=='file' ) { %>
+                        <div class="admin__CM__imgWrap">
+                            <input type="file" data-id="<%= key %>" class="admin__CM__editableItem__content">
+                            <img src="<%= editables[key].value(item, key) %>" alt="" class="admin__CM__img">
+                        </div>
+                    <% } else if ( editables[key].type=='character' ) { %>
+                        <label for="<%= key %>" class="admin__CM__editableItem__heading bold">
+                            <%= editables[key].text %>:
+                        </label>
+                        <div class="admin__CM__editableItem__wrap">
+                            <svg class="character__icon">
+                                <use xlink:href="../img/icons/icons.svg#<%= editables[key].icon %>">
+                                </use>
+                            </svg>
+                            <input class="admin__CM__editableItem__content character__input" data-id="<%= key %>" type="number" value="<%= editables[key].value(item, key) %>">
+                            <span class="character__input__addText"><% const value = editables[key].addText(item, `addText-${key}`) %><%= value %></span>
+                        </div>
+                    <% } else { %>
+                        <span class="admin__CM__editableItem__heading bold"><%= editables[key].text %>:</span>
+                        <div class="editable__content">
+                            <% if (editBtns) { %>
+                                <%= editBtns() %>
+                            <% }; %>
+                            <div class="admin__CM__editableItem__content" data-id="<%= key %>" contenteditable="true"><%= editables[key].value(item, key) %></div>
+                        </div>
+                    <% }; %>
+                </div>
+
+                <% if ( editables[key].group=='end' ) { %>
+                    </div>
+                <% }; %>
+            <% }; %>
+
+        <% }; %>
+        <% if (checkBtns) { %>
+            <div class="admin__CM__checkboxes">
+                <% checkBtns.btns.forEach((btn)=> { %>
+                    <label class="admin__CM__checkLabel">
+                        <input type="checkbox" class="admin__CM__checkbox" name="<%= checkBtns.name %>" hidden
+                        <% if (btn.checked(item, btn.value, 'checkbox')) { %>
+                            checked>
+                        <% } else { %>
+                            >
+                        <% }; %>
+                        <div class="admin__CM__customCheckbox"></div>
+                        <span class="admin__CM__checkboxText"><%= btn.text %></span>
+                    </label>
+                <% }); %>
+            </div>
+        <% }; %>
+        <% if (radioBtns) { %>
+            <div class="admin__CM__radios">
+                <% radioBtns.btns.forEach((btn)=> { %>
+                    <label class="admin__CM__radioLabel"> 
+                        <input type="radio" class="admin__CM__radio" name="<%= radioBtns.name %>" value="<%= btn.value %>" hidden 
+                        <% if (btn.checked(item, btn.value)) { %>
+                            checked>
+                        <% } else { %>
+                                >
+                        <% }; %>
+                        <div class="admin__CM__customRadio"></div>
+                        <span class="admin__CM__radioText"><%= btn.text %></span>
+                    </label>
+                <% }); %>
+            </div>
+        <% }; %>
+    </div>
+    <div class="admin__CM__buttons">
+        <button class="admin__CM__btn btn--accent" data-type="save" disabled>Сохранить</button>
+        <button class="admin__CM__btn btn--normal" data-type="cancel">Отменить</button>
+    </div>
+</div>

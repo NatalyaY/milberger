@@ -1,0 +1,76 @@
+<% let arr = data.leads; %>
+
+    <% if (arr.length) { %>
+        <% for (let i=0; i < arr.length; i++) { %>
+            <% let date = arr[i].date; %>
+            <% const dateNow = Date.parse(new Date()); %>
+            <% const dateNowUTC = Date.parse(new Date(new Date().getUTCFullYear(), new Date().getUTCMonth(), new Date().getUTCDate(), new Date().getUTCHours(), new Date().getUTCMinutes(), new Date().getUTCSeconds())); %>
+            <% date = new Date(date + dateNow - dateNowUTC); %>
+            <% const dateString = `${('0' + date.getDate()).slice(-2)}.${('0' + (date.getMonth()+1)).slice(-2)}.${date.getFullYear()}` %>
+            <% const timeString = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`; %>
+                <div class="admin__content__item" data-id="<%- arr[i]._id %>">
+                    <div class="admin__content__item__data">
+                        <p class="admin__content__item__date" data-timestamp="<%- Date.parse(date) %>"><span class="bold"><%- dateString %></span><br><%- timeString %></p>
+                        <span class="admin__content__item__id bold"><%- arr[i].UUID %></span>
+                        <span class="admin__content__item__status" data-statusCode="<%- arr[i].statusCode %>" data-type="status"><%- arr[i].status %></span>
+                        <span class="admin__content__item__formType"><span class="bold">Тип заявки: </span><%- arr[i].data.form %></span>
+                        <span class="admin__content__item__phone"><%- arr[i].data.phone %></span>
+                        <button class="admin__content__item__btn" data-type="view">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="admin__content__item__hidden">
+                        <div class="admin__content__item__hidden__statusesContainer">
+                            <span class="admin__content__item__hidden__statuses__heading bold">Статус:</span>
+                            <div class="admin__content__item__hidden__statuses__select">
+                                <p class="admin__content__item__hidden__statuses__currentStatus"><span class="statusText" data-type="status"><%- arr[i].status %></span> <i class="fa-solid fa-caret-down"></i></p>
+                                <ul class="admin__content__item__hidden__statuses">
+                                    <% const statuses = Object.keys(arr[i].statusCodes).reduce((acc, cur) => { %>
+                                        <% let code = parseInt(arr[i].statusCodes[cur]); %>
+                                        <% if (code == 0) { %>
+                                            <% code = 'Новая'; %>
+                                        <% } else if (code == 1) { %>
+                                            <% code = 'В работе'; %>
+                                        <% } else if (code == 2) { %>
+                                            <% code = 'Успешная'; %>
+                                        <% } else if (code == 3) { %>
+                                            <% code = 'Отмена'; %>
+                                        <% }; %>
+                                        <% if (!acc[code]) { %>
+                                            <% acc[code] = []; %>
+                                            <% acc[code].push(cur); %>
+                                        <% } else { %>
+                                            <% acc[code].push(cur); %>
+                                        <% }; %>
+                                        <% return acc; %>
+                                    <% }, {}) %>
+                                    <% for (const key in statuses) { %>
+                                        <li data-code="<%- arr[i].statusCodes[key] %>" class="admin__content__item__hidden__statuses__statusGroup<% if (statuses[key].length > 1) { %> withSubgroup"><% } else { %>"><% }; %>
+                                            <span><%- key %></span>
+                                            <i class="fa-solid fa-caret-right rightIcon"></i>
+                                            <% if (statuses[key].length > 1) { %>
+                                                <ul class="admin__content__item__hidden__statuses__statusGroup__subgroup">
+                                                    <% statuses[key].forEach((status) => { %>
+                                                        <li data-code="<%- arr[i].statusCodes[status] %>" class="admin__content__item__hidden__statuses__statusGroup__item"><span><%- status %></span></li>
+                                                    <% }); %>
+                                                </ul>
+                                            <% }; %>
+                                        </li>
+                                    <% }; %>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="admin__content__item__hidden__dataContainer">
+                            <% for (const key in arr[i].data) { %>
+                                <div class="admin__content__item__hidden__item">
+                                    <span class="admin__content__item__hidden__label bold"><%- arr[i].formNames[key] %>: </span>
+                                    <span class="admin__content__item__hidden__value"><%= arr[i].data[key] %></span>
+                                </div>
+                            <% }; %>
+                        </div>
+                    </div>
+                </div>
+        <% }; %>
+    <% } else { %>
+        <span class="admin__content__emptyText">Нет заявок</span>
+    <% }; %>

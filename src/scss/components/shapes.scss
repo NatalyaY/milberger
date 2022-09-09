@@ -1,0 +1,49 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+@use "sass:meta";
+
+.shape {
+    stroke: $basic;
+    width: 189px;
+    height: 189px;
+    position: absolute;
+    z-index: 1;
+}
+
+@mixin shapePosition ($horizontal: left, $bottom: auto, $top: auto, $translateY: 0%) {
+    @extend %showOnlyFromTablet;
+    @include setDeskStyles {
+        #{$horizontal}: 0;
+        $translateX: -50%;
+        @if $horizontal == right {
+            $translateX: $translateX * -1;
+        };
+        bottom: $bottom;
+        top: $top;
+        transform: translate(#{$translateX}, #{$translateY});
+    }
+}
+
+#home .shape {
+    @include shapePosition($bottom: 0, $translateY: 50%);
+}
+
+#cost .shape {
+    @include shapePosition($bottom: 0, $translateY: 50%, $horizontal: right);
+}
+
+#projects .shape {
+    @include shapePosition($bottom: 0, $translateY: 20%, $horizontal: right);
+}
+
+#smart .shape {
+    @include shapePosition($bottom: 195.9px, $horizontal: left);
+}
+
+#faq .shape {
+    @include shapePosition($top: 0, $translateY: -60%, $horizontal: right);
+}
+
+#articles .shape {
+    @include shapePosition($top: 292px, $horizontal: left);
+}

@@ -1,0 +1,53 @@
+@use '../variables' as *;
+
+@mixin setTabletStyles {
+    @media (max-width: $tablet) {
+        @content;
+    }
+}
+
+@mixin setMobileStyles {
+    @media (max-width: $mobile) {
+        @content;
+    }
+}
+
+@mixin setDeskStyles {
+    @media (min-width: #{$tablet+1}) {
+        @content;
+    }
+}
+
+@mixin setDeskStylesXL {
+    @media (min-width: $desk) {
+        @content;
+    }
+}
+
+@mixin setStylesTabletBeforeDeskXL {
+    @media (max-width: $desk) and (min-width: $tablet+1) {
+        @content;
+    }
+}
+
+@mixin setDeskWidth($cols, $extend: 0px) {
+    width: calc((($cols * $colWidth + $extend) + ($cols - 1) * $colGutter) / $contentWidth--Desk)*100%;
+}
+
+@mixin setMobileWidth {
+    @include setTabletStyles {
+        width: 100%;
+        text-align: center;
+        align-items: center;
+    }
+}
+
+@mixin setWidthAdaptive($cols) {
+    @include setDeskWidth($cols);
+    @include setMobileWidth;
+}
+
+@mixin setWidthAdaptiveWithExtend($cols, $extend) {
+    @include setDeskWidth($cols, $extend);
+    @include setMobileWidth;
+}

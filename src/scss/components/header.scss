@@ -1,0 +1,262 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+@mixin dropdownMenu {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    flex-basis: 100%;
+    width: 100%;
+    align-items: center;
+}
+
+@mixin dropdownMenu--opened {
+    visibility: visible;
+    position: relative;
+    opacity: 1;
+    transition: $transitionTime-main;
+}
+
+%active {
+    color: $color;
+    font-weight: bold;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -5px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: $color;
+        transform: translate(-50%, 100%);
+    }
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: $white;
+    z-index: 100;
+}
+
+.nav {
+    padding: 30px 0;
+    flex-wrap: wrap;
+    position: relative;
+    background: $white;
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background-color: $stroke-gray;
+    }
+
+    @include setTabletStyles {
+        padding: 12.5px 0;
+    }
+
+    & &__menu {
+        flex: 1;
+        margin-right: 20px;
+        height: 18px;
+
+        @media (min-width: 1100px) {
+            display: none;
+        }
+    }
+
+    & a {
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+
+        &::before {
+            display: block;
+            content: attr(title);
+            font-weight: bold;
+            height: 0;
+            overflow: hidden;
+            visibility: hidden;
+        }
+
+        &.nav__item__link:hover {
+            @extend %active;
+        }
+    }
+
+    & &__items {
+        flex: 1;
+        @extend %gap-small;
+
+        & .active {
+            @extend %active;
+        }
+
+        @media (max-width: 1100px) {
+            @include dropdownMenu;
+            flex-direction: column;
+            order: 3;
+            gap: 30px;
+            font-size: 18px;
+        }
+    }
+
+    & &__contacts {
+        margin-bottom: 10px;
+
+        @include setTabletStyles {
+            @include dropdownMenu;
+            margin-bottom: 0;
+
+            &.nav__messangers {
+                flex-direction: column;
+                order: 4;
+            }
+        }
+    }
+}
+
+.nav__logo {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: $heading-ls;
+
+    @include setTabletStyles {
+        line-height: 20px;
+    }
+
+    &Container {
+        flex: 0 0 auto;
+    }
+
+    &__text {
+        color: $text-color-basic1;
+    }
+
+    &__addText {
+        color: $text-color-basic3;
+        @extend %showOnlyInMobile;
+    }
+
+    &__descriprion {
+        position: relative;
+        margin-left: 31px;
+        font-size: 10px;
+        @extend %showOnlyInDesk;
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -10px;
+            width: 1px;
+            height: 100%;
+            background-color: rgba(240, 240, 240, 1);
+        }
+    }
+
+}
+
+.nav__telBlock {
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__text {
+        font-size: 10px;
+        color: $light-gray;
+        margin-bottom: 5px;
+    }
+
+    &__tel {
+        font-weight: bold;
+        font-size: 24px;
+
+        @include setTabletStyles {
+            font-size: 18px;
+        }
+    }
+}
+
+.nav__messangers {
+    align-self: flex-end;
+    margin-right: 10px;
+
+    &__text {
+        @extend %showOnlyInMobile;
+    }
+}
+
+.nav__burger {
+    width: 16px;
+    height: 2px;
+    background-color: $color;
+    border-radius: 1px;
+    position: relative;
+    transition: $transitionTime-main;
+
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 50%;
+        border-radius: inherit;
+        background-color: transparentize($color , 0.6);
+    }
+
+    &::before {
+        top: -6px;
+        left: 0;
+    }
+
+    &::after {
+        bottom: -6px;
+        right: 0;
+    }
+}
+
+.nav__menu-checkbox:checked {
+
+    &~.nav::after {
+        transform: scaleX(1.5);
+    }
+
+    &~.nav .nav__menu .nav__burger {
+        width: 8px;
+        background-color: transparentize($color , 0.6);
+
+        &::before,
+        &::after {
+            width: 16px;
+            background-color: $color;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    &~.nav .nav__items {
+        @include dropdownMenu--opened;
+        margin-top: 28px;
+    }
+
+    @include setTabletStyles {
+        &~.nav .nav__contacts {
+            @include dropdownMenu--opened;
+
+            &.nav__messangers {
+                margin-top: 39px;
+            }
+
+            &.nav__telBlock {
+                margin-top: 47.5px;
+            }
+        }
+    }
+}

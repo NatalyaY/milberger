@@ -1,0 +1,36 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+
+#login,
+#register {
+    flex: 1;
+    background-color: $text-accent;
+    color: white;
+}
+
+.login__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login__form {
+    max-width: 400px;
+    margin-top: 100px;
+    width: 100%;
+    gap: 20px;
+
+    .checkout__inputWrap__input {
+        padding-left: 25px;
+    }
+}
+
+.err_msg {
+    position: absolute;
+    color: rgb(231, 71, 71);
+    left: 50%;
+    bottom: -10px;
+    transform: translate(-50%, 100%);
+    display: none;
+}

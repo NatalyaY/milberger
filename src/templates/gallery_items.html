@@ -1,0 +1,7 @@
+<% for (let i = 0; i < items.length; i++) { %>
+    <article class="home__gallery__item gallery__item d-flex--col j-end" data-id="<%-i+1%>">
+        <h3 class="home__gallery__item__heading"><%- items[i].title %></h3>
+        <p class="home__gallery__item__description"><%- items[i].description %></p>
+        <a href="#" class="home__gallery__item__link">Смотреть проект</a>
+    </article>
+<% }; %>

@@ -1,0 +1,162 @@
+@use '../variables' as *;
+@use '_mixins' as *;
+
+%showOnlyInMobile {
+    @media (min-width: $tablet) {
+        display: none;
+    }
+}
+
+%showOnlyFromTablet {
+    @media (max-width: $tablet) {
+        display: none;
+    }
+}
+
+%showOnlyInDesk {
+    @media (max-width: $desk) {
+        display: none;
+    }
+}
+
+%gap-small {
+    gap: 10px;
+}
+
+%font18to16 {
+    font-size: 18px;
+
+    @include setTabletStyles {
+        font-size: 16px;
+    }
+}
+
+%font18to12 {
+    font-size: 18px;
+
+    @include setTabletStyles {
+        font-size: 12px;
+    }
+}
+
+%font18to10 {
+    font-size: 18px;
+
+    @include setTabletStyles {
+        font-size: 10px;
+    }
+}
+
+%font16to14 {
+    font-size: 16px;
+
+    @include setTabletStyles {
+        font-size: 14px !important;
+    }
+}
+
+%font14to12 {
+    font-size: 14px;
+
+    @include setTabletStyles {
+        font-size: 12px;
+    }
+}
+
+%font12to8 {
+    font-size: 12px;
+
+    @include setTabletStyles {
+        font-size: 8px;
+    }
+}
+
+%heading--normal {
+    font-size: $fs__heading--normal;
+
+    @include setTabletStyles {
+        font-size: $fs__heading--normal--mobile;
+    }
+
+    ;
+}
+
+%subheading--normal {
+    font-size: $fs__subheading--normal;
+
+    @include setTabletStyles {
+        font-size: $fs__subheading--normal-mobile;
+    }
+
+    ;
+}
+
+%heading--medium {
+    font-size: $fs__heading--medium;
+
+    @include setTabletStyles {
+        font-size: $fs__heading--medium--mobile;
+    }
+
+    ;
+}
+
+%flex-adaptive {
+    display: flex;
+
+    @include setTabletStyles {
+        flex-direction: column;
+    }
+}
+
+%list-item {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid transparentize($color, .4);
+        background-image: url(../img/icons/check.png);
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+%bordered {
+    border: 15px solid $white;
+    border-radius: 44px;
+    box-shadow: 0 0 0 1px $stroke-gray;
+}
+
+%rounded {
+    max-width: 56px;
+    width: 100vw;
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+    @include setTabletStyles {
+        max-width: 40px;
+        border-width: 1.5px;
+    }
+
+    &.active {
+        color: $dark-gray;
+        background-color: $accent;
+        border-color: $accent;
+    }
+}
+
+%current {
+    visibility: visible;
+    opacity: 1;
+}
+
+%hidden {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+}

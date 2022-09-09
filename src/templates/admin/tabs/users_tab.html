@@ -1,0 +1,25 @@
+<article class="admin__content__tab" id="users">
+    <header class="admin__content__header d-flex--col">
+        <h2 class="admin__content__header__title bold-color">Управление пользователями</h2>
+        <button class="admin__content__header__addBtn" data-type="add">
+            <i class="fa-solid fa-user-plus"></i>
+            Добавить пользователя
+        </button>
+    </header>
+    <div class="admin__content__sections d-flex">
+        <section class="admin__content__section" data-section="admin">
+            <h3 class="users__admins admin__content__section__header bold">Администраторы</h3>
+            <div class="admin__content__items_list">
+                <% data.users.type='admins' %>
+                <%= include('../partials/users_list') %>
+            </div>
+        </section>
+        <section class="admin__content__section" data-section="user">
+            <h3 class="users__admins admin__content__section__header bold">Пользователи</h3>
+            <div class="admin__content__items_list">
+                <% data.users.type='users' %>
+                <%= include('../partials/users_list') %>
+            </div>
+        </section>
+    </div>
+</article>

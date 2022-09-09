@@ -1,0 +1,98 @@
+@use '../variables' as *;
+@use '../helpers' as *;
+
+.benefits__list__items {
+    gap: 10px;
+}
+
+.benefits__list__item {
+    min-height: 20px;
+
+    .withMarker & {
+        padding-left: 25px;
+    }
+
+    .benefit__tab {
+        display: block;
+        position: relative;
+        cursor: pointer;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 2px;
+        }
+
+        .whiteBenefits &::before,
+        .whiteBenefits &::after {
+            background-color: $white;
+        }
+
+        .colorBenefits &::before,
+        .colorBenefits &::after {
+            background-color: $color;
+        }
+
+        &::after {
+            transform: rotate(90deg) translateX(-1px);
+        }
+
+        .benefit__title {
+            font-size: 16px;
+            margin-right: 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            display: block;
+
+            .withMarker & {
+                @extend %list-item;
+
+                &:before {
+                    left: -5px;
+                    transform: translateX(-100%);
+                }
+            }
+
+            .withMarker--white & {
+                @extend %list-item;
+
+                &:before {
+                    border-color: transparentize($white, .5);
+                    background-image: url(../img/icons/check--white.png);
+                    background-size: 8px;
+                    left: -5px;
+                    transform: translateX(-100%);
+                }
+            }
+
+        }
+    }
+
+    .benefit__hidden {
+        @extend %font14to12;
+        visibility: hidden;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        opacity: 0;
+        transition: opacity $transitionTime-main, margin $transitionTime-main;
+    }
+
+    .benefit__radio:checked {
+        &~.benefit__tab::after {
+            display: none;
+        }
+
+        &~.benefit__hidden {
+            visibility: visible;
+            opacity: 1;
+            position: relative;
+            margin-top: 10px;
+        }
+    }
+}
