@@ -597,6 +597,29 @@ function handleConstructorBtns() {
                     if (contenteditables.length) {
                         [...contenteditables].forEach(contenteditable => contenteditable.removeAttribute('contenteditable'));
                     };
+                    const floatImgBlocks = cur.querySelectorAll('.imageFloat');
+                    if (floatImgBlocks.length) {
+                        [...floatImgBlocks].forEach((block) =>{
+                            const images = block.querySelectorAll('.imgWrap');
+                            if (!images.length) {
+                                block.classList.remove('.imageFloat');
+                                return;
+                            } else {
+                                for (let i = 0; i < images.length; i++) {
+                                    const modifier = i == 0 ? 0 : 3;
+                                    const img = [...block.children].find(child => child === images[i]);
+                                    img.style.order = i + 2 + modifier;
+                                    const imgNextChild = img.nextElementSibling;
+                                    imgNextChild.style.order = i + 1 + modifier;
+                                    let nextSibling = imgNextChild.nextElementSibling;
+                                    while (nextSibling && !nextSibling.classList?.contains('imgWrap')) {
+                                        nextSibling.style.order = i + 3 + modifier;
+                                        nextSibling = nextSibling.nextElementSibling;
+                                    };
+                                }
+                            };
+                        });
+                    }
                     value = cur.innerHTML;
                 };
 

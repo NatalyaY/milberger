@@ -1,5 +1,4 @@
 'use strict';
-
 export class EditableToolbar {
     constructor(el) {
         this.toolbar = el;
@@ -117,7 +116,7 @@ export class EditableToolbar {
             };
             if (e.keyCode === 13) {
                 let curNode = this.getCurrentNode();
-                
+
                 if (curNode.tagName == 'P') {
                     if (this.selector != 'p') {
                         this.selector = 'p';
@@ -340,7 +339,11 @@ export class EditableToolbar {
         this.selector = e.currentTarget.dataset.type;
         this.restoreSel();
         let node = this.getCurrentNode();
-        if ((node.tagName == 'P') && (node.parentNode.tagName != 'SECTION') && (!node.parentNode.classList.contains('col')) && (this.selector != 'div')) {
+        let childs = [];
+        if (node.parentNode.children.length) {
+            childs = [...node.parentNode.children].filter((child) => !child.classList.contains('widget'));
+        };
+        if ((node.tagName == 'P') && (childs.length == 1) && (node.parentNode.tagName != 'SECTION') && (!node.parentNode.classList.contains('col')) && (this.selector != 'div')) {
             node = node.parentNode;
         };
         const content = node.textContent;
@@ -425,9 +428,6 @@ export class EditableToolbar {
         } else {
             window.getSelection().getRangeAt(0).insertNode(imgWrap);
         };
-
-        const parent = imgWrap.parentNode.closest('.admin__CM__editableItem__content div') || imgWrap.parentNode.closest('.admin__CM__editableItem__content section');
-        parent.classList.add('clearfix');
 
         this.setCaretPos(imgWrap);
         document.execCommand('insertImage', false, url);
@@ -803,7 +803,18 @@ export class EditableToolbar {
                         };
                         img = imgWrap;
                         this.setCaretPos(img);
-                    }
+                    };
+                    if ((e.currentTarget.dataset.type == 'left') || (e.currentTarget.dataset.type == 'right')) {
+                        const parent = img.parentNode;
+                        parent.classList.add('imageFloat', 'clearfix');
+                    } else {
+                        if (img.parentNode.classList?.contains('imageFloat')) {
+                            img.parentNode.classList.remove('imageFloat');
+                        };
+                        if (img.parentNode.classList?.contains('clearfix')) {
+                            img.parentNode.classList.remove('clearfix');
+                        };
+                    };
                 };
                 img.dataset.style = e.currentTarget.dataset.type;
                 img.classList.add('active');
@@ -813,5 +824,3 @@ export class EditableToolbar {
         return wrap;
     }
 }
-
-
