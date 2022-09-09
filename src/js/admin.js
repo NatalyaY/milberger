@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { adminTab } from './adminTabs.js';
 import { openPopup } from './openPopup.js';
 import { EditableToolbar } from './editBtns';
-import { ObjectID } from 'bson';
 
 
 const tab = document.querySelector('.admin__content__tab');
@@ -452,7 +451,6 @@ function openConstructor(e) {
     const constructor = document.querySelector('.constructor');
     const editToolbars = constructor.querySelectorAll('.editbtns');
 
-    //TODO: save instances of toolbars
     if (editToolbars.length) {
         editToolbars.forEach((toolbar) => {
             const type = toolbar.closest('.admin__CM__editableItem').dataset.type;
@@ -543,7 +541,6 @@ function handleConstructorBtns() {
             formData.append("previewImg", previewFile, previewImgBlob);
         };
 
-        //TODO: get files from editbtns content and remove all widget blocks
         if (Object.keys(toolbars).length) {
             Object.keys(toolbars).forEach((key) => {
                 Object.keys(toolbars[key].files).forEach((file) => {

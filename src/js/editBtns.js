@@ -12,14 +12,23 @@ export class EditableToolbar {
         this.files = {};
         const images = this.editable.querySelectorAll('img');
         const blocks = this.editable.querySelectorAll('div:not(.col)');
+        const uls = this.editable.querySelectorAll('ul');
+        const ols = this.editable.querySelectorAll('ol');
+        this.linkBtn = el.querySelector('[data-type="link"]');
+        this.colorBtns = el.querySelectorAll('.colorPicker');
+
 
         [...images].forEach((image) => {
-            this.imgAppendWidgetAndListeners(image.parentNode);
+            if (image) {
+                this.imgAppendWidgetAndListeners(image.parentNode);
+            }
         });
 
-        [...blocks].forEach((block) => {
-            const btns = this.getWidgetBtns();
-            block.append(...btns);
+        [...blocks, ...uls, ...ols].forEach((block) => {
+            if (block) {
+                const btns = this.getWidgetBtns();
+                block.append(...btns);
+            }
         });
 
         this.editable.addEventListener('paste', (e) => {
@@ -107,7 +116,8 @@ export class EditableToolbar {
                 };
             };
             if (e.keyCode === 13) {
-                const curNode = this.getCurrentNode();
+                let curNode = this.getCurrentNode();
+                
                 if (curNode.tagName == 'P') {
                     if (this.selector != 'p') {
                         this.selector = 'p';
@@ -143,6 +153,9 @@ export class EditableToolbar {
                     };
                 });
 
+                if (curNode.tagName == 'SPAN') {
+                    curNode = curNode.parentNode;
+                };
                 curNode.after(p);
                 this.setCaretPos(p);
             };
@@ -152,6 +165,10 @@ export class EditableToolbar {
         this.handleSimpleCommands(this.actionBtns);
         this.handleDropdowns(this.dropdowns);
         this.imgBtn.addEventListener('input', this.addImg);
+        this.linkBtn.addEventListener('click', this.addLink);
+        [...this.colorBtns].forEach((btn) => {
+            btn.addEventListener('input', this.handleColorBtns);
+        })
 
         return this;
     }
@@ -189,10 +206,10 @@ export class EditableToolbar {
                 this.restoreSel();
                 e.currentTarget.classList.toggle('active');
                 const command = e.currentTarget.dataset.command;
+                const curElem = this.getCurrentNode();
                 if ((command == 'insertUnorderedList') || (command == 'insertOrderedList')) {
                     const anotherCommand = (command == 'insertUnorderedList') ? "insertOrderedList" : "insertUnorderedList";
                     const anotherListBtn = this.toolbar.querySelector(`[data-command="${anotherCommand}"]`);
-                    const curElem = this.getCurrentNode();
                     if (curElem.tagName == 'LI') {
                         e.currentTarget.classList.remove('active');
                         anotherListBtn.removeAttribute('disabled');
@@ -212,17 +229,39 @@ export class EditableToolbar {
                     } else {
                         e.currentTarget.classList.add('active');
                         anotherListBtn.setAttribute('disabled', 'true');
-                        if ((curElem.previousSibling)&&(curElem.previousSibling.tagName == 'UL')|| (curElem.tagName == 'OL')) {
+                        if ((curElem.previousSibling) && (curElem.previousSibling.tagName == 'UL') || (curElem.tagName == 'OL')) {
                             document.execCommand(command, false, null);
                             return;
                         };
                         document.execCommand(command, false, null);
                         const list = curElem.querySelector('ul') || curElem.querySelector('ol');
                         curElem.replaceWith(list);
+                        btns = this.getWidgetBtns();
+                        list.append(...btns);
                         this.setCaretPos(list);
                         return;
                     }
-                }
+                };
+                if ((e.currentTarget.dataset.type == "align") && (curElem.classList?.contains('imgWrap'))) {
+                    switch (command) {
+                        case "justifyLeft":
+                            curElem.style.marginRight = 'auto';
+                            curElem.style.marginLeft = 'unset';
+                            break;
+                        case "justifyCenter":
+                            curElem.style.marginRight = 'auto';
+                            curElem.style.marginLeft = 'auto';
+                            break;
+                        case "justifyRight":
+                            curElem.style.marginLeft = 'auto';
+                            curElem.style.marginRight = 'unset';
+                            break;
+                        case "justifyFull":
+                            curElem.style.width = '100%';
+                            break;
+                    };
+                    return;
+                };
                 document.execCommand(command, false, null);
             });
         });
@@ -247,6 +286,9 @@ export class EditableToolbar {
                             break;
                         case 'columns':
                             this.handleColumnsBtns(e);
+                            break;
+                        case 'fz':
+                            this.handleFontBtns(e);
                             break;
                         default:
                             break;
@@ -340,6 +382,31 @@ export class EditableToolbar {
 
     }
 
+    handleFontBtns = (e) => {
+        const size = e.currentTarget.dataset.type + 'px';
+        this.restoreSel();
+        document.execCommand('styleWithCSS', false, true);
+        document.execCommand('fontSize', false, size);
+        document.execCommand('styleWithCSS', false, false);
+        const spans = Array.from(this.editable.querySelectorAll('span[style^="font-size"]'));
+        if (spans.length) {
+            spans.forEach((span) => {
+                span.removeAttribute('style');
+                span.className = `fz-${e.currentTarget.dataset.type}`;
+            });
+        };
+    }
+
+    handleColorBtns = (e) => {
+        const type = e.currentTarget.dataset.type;
+        const command = type === 'font' ? 'foreColor' : 'hiliteColor';
+        const color = e.currentTarget.value;
+        this.restoreSel();
+        document.execCommand('styleWithCSS', false, true);
+        document.execCommand(command, false, color);
+        document.execCommand('styleWithCSS', false, false);
+    }
+
     addImg = (e) => {
         this.restoreSel();
         const file = e.currentTarget.files[0];
@@ -421,7 +488,7 @@ export class EditableToolbar {
             };
 
             if (prevImgEl != this.prevImgEl) {
-                if (prevImgEl.childNodes.length) {
+                if (prevImgEl.childNodes?.length) {
                     this.prevImgEl.append(...prevImgEl.childNodes);
                 };
                 prevImgEl.remove();
@@ -433,6 +500,66 @@ export class EditableToolbar {
             this.setCaretPos(e.currentTarget.parentNode);
             this.saveSel();
         });
+    }
+
+    addLink = () => {
+        const layer = document.createElement('div');
+        layer.classList.add('layer');
+
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+
+        const closeBtn = document.createElement('img');
+        closeBtn.src = "../img/icons/close.png";
+        closeBtn.classList.add('popup_close');
+
+        const heading = document.createElement('h2');
+        heading.textContent = 'Введите адрес ссылки';
+
+        const form = document.createElement('form');
+        form.classList.add('normal');
+
+        const inputWrap = document.createElement('div');
+        inputWrap.classList.add('checkout__inputWrap');
+
+        const urlInput = document.createElement('input');
+        urlInput.type = 'url';
+        urlInput.placeholder = 'url';
+        urlInput.setAttribute('required', 'true');
+        urlInput.classList.add('checkout__inputWrap__input');
+
+        inputWrap.appendChild(urlInput);
+
+        const submitWrap = document.createElement('div');
+        submitWrap.classList.add('checkout__btnWrap', 'btn--accent');
+
+        const submit = document.createElement('input');
+        submit.type = 'submit';
+        submit.value = 'Вставить';
+        submit.classList.add('btn--checkout');
+
+        submitWrap.appendChild(submit);
+
+        form.append(inputWrap, submitWrap);
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const url = urlInput.value;
+            this.restoreSel();
+            document.execCommand('CreateLink', false, url);
+            layer.remove();
+        });
+        popup.append(closeBtn, heading, form);
+        layer.append(popup);
+        [layer, closeBtn].forEach((el) => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if ((e.target != closeBtn) && (e.target.closest('.popup'))) {
+                    return;
+                };
+                layer.remove();
+            });
+        });
+        document.body.appendChild(layer);
     }
 
     handleBlockTypes = ({ node = '', innerText }) => {
@@ -584,13 +711,15 @@ export class EditableToolbar {
                 let widthPercent = ((width) / imgParent.clientWidth) * 100;
                 widthPercent = widthPercent > 100 ? 100 : widthPercent;
                 img.style.width = widthPercent + '%';
-                document.addEventListener('pointerup', (e) => {
-                    document.removeEventListener('pointermove', resize);
-                    img.classList.remove('active');
-                });
             };
 
             document.addEventListener('pointermove', resize);
+            function endResize() {
+                document.removeEventListener('pointermove', resize);
+                img.classList.remove('active');
+                document.removeEventListener('pointerup', endResize);
+            };
+            document.addEventListener('pointerup', endResize);
         });
 
         return btnEl;

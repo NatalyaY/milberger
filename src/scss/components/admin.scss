@@ -285,7 +285,7 @@ button {
             flex: 1 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 20px;
         }
 
         &__content {
@@ -302,6 +302,10 @@ button {
 
             &[data-id="body"] {
                 min-height: 300px;
+            }
+
+            &[data-id="description"] {
+                min-height: 200px;
             }
         }
 
@@ -591,6 +595,7 @@ button {
     border-radius: 28px;
     padding: 20px 30px 30px;
     min-width: 315px;
+    max-width: 90%;
 
     &_successImg {
         width: calc(100% + 60px);

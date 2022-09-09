@@ -38,31 +38,49 @@
 
 .editbtns {
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 20px;
     align-items: center;
 
     button {
-        padding: 0 8px;
         position: relative;
         cursor: pointer;
+        margin-bottom: -10px;
 
-        &[data-command="insertUnorderedList"].active, &[data-command="insertOrderedList"].active {
+        &[data-command="insertUnorderedList"].active,
+        &[data-command="insertOrderedList"].active {
             background-color: transparentize($color, $amount: .5);
+        }
+
+        &.colorPickerBtn {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            &::before {
+                position: absolute;
+                left: 8px;
+                top: 11px;
+            }
         }
     }
 
-    .openDropdownBtn[data-type="selector"] {
-        min-width: 175px;
-        padding-top: 10px;
-        padding-bottom: 10px;
+    .openDropdownBtn {
+        padding: 10px;
         border: 1px solid transparentize($color, .5);
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 10px;
+        margin: 0;
+    }
+
+    .openDropdownBtn[data-type="selector"] {
+        min-width: 175px;
     }
 
     .btn_dropdown {
         position: relative;
+        display: flex;
+        margin-bottom: -10px;
 
         .dropdown_result {
             margin-right: 10px;
@@ -70,6 +88,7 @@
     }
 
     .btn_dropdown_list {
+        min-width: 100%;
         background-color: white;
         box-shadow: 0 1px 2px 1px rgba(0, 0, 0, .15);
         position: absolute;
@@ -85,12 +104,12 @@
         }
 
         button {
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding: 10px 25px 10px 10px;
             width: 100%;
             height: 100%;
             text-align: left;
             white-space: nowrap;
+            margin: 0;
         }
 
         li {
@@ -133,6 +152,16 @@
         padding: 5px;
         height: 30px;
         width: 50px;
+    }
+
+    .colorPicker {
+        background: transparent;
+        width: 70px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border: 1px solid rgba(57, 20, 132, 0.5);
+        height: 36px;
+        padding-left: 20px;
     }
 }
 
@@ -315,9 +344,22 @@
             }
         }
     }
+
+    ol,
+    ul {
+        position: relative;
+        @include widgetBtns;
+        border: 1px dotted transparent;
+
+        &:hover {
+            padding: 8px;
+            border-color: gray;
+        }
+    }
 }
 
-.editbtns .col, .admin__CM__editableItem__content .col {
+.editbtns .col,
+.admin__CM__editableItem__content .col {
     flex: 1 1 0;
     border: 1px dotted gray;
 }
@@ -332,6 +374,25 @@
 }
 
 input[type=file],
+.colorPicker,
 input[type=file]::-webkit-file-upload-button {
     cursor: pointer;
+}
+
+.popup {
+
+    form {
+        font-size: 14px;
+    }
+
+    .checkout__inputWrap,
+    .checkout__btnWrap {
+        margin-top: 25px;
+        width: 350px;
+        max-width: 100%;
+    }
+
+    .checkout__inputWrap__input {
+        padding: 15px;
+    }
 }

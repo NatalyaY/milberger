@@ -24,7 +24,11 @@ export function openPopup(msg, customState = "") {
         layer = document.querySelector('.layer');
         const closeBtn = layer.querySelector('.popup_close');
         [layer, closeBtn].forEach((el) => {
-            el.addEventListener('click', () => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if ((e.target != closeBtn) && (e.target.closest('.popup'))) {
+                    return;
+                };
                 layer.remove();
             });
         });

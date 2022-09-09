@@ -1,6 +1,7 @@
 <div class="editbtns d-flex">
     <div class="btn_dropdown">
-        <button class="btn openDropdownBtn" data-type="selector"><span class="dropdown_result">Абзац</span><i class="fa-solid fa-caret-down"></i></button>
+        <button class="btn openDropdownBtn" data-type="selector"><span class="dropdown_result">Абзац</span><i
+                class="fa-solid fa-caret-down"></i></button>
         <ul class="btn_dropdown_list">
             <li class="active">
                 <button data-type="p">Абзац</button>
@@ -23,7 +24,8 @@
         </ul>
     </div>
     <div class="btn_dropdown">
-        <button class="btn openDropdownBtn fa-solid fa-table-columns" data-type="columns" title="Разделить на колонки"></button>
+        <button class="btn openDropdownBtn fa-solid fa-table-columns" data-type="columns"
+            title="Разделить на колонки"></button>
         <ul class="btn_dropdown_list">
             <li>
                 <button data-type="2">
@@ -63,39 +65,74 @@
     <button class="btn fas fa-list-ul" title="Маркированный список" data-command="insertUnorderedList"></button>
     <button class="btn fas fa-list-ol" title="Нумерованный список" data-command="insertOrderedList"></button>
 
-    <button class="btn fas fa-quote-right" title="Цитата"></button>
     <button class="btn far fa-image" title="Изображение">
         <input type="file" name="img" class="hiddenInput" data-type="image">
     </button>
-    <button class="btn fas fa-link" title="Ссылка"></button>
+    <button class="btn fas fa-link" title="Ссылка" data-type="link"></button>
     <button class="btn fas fa-unlink" title="Удаление ссылки" data-command="unlink"></button>
-    <button class="btn fas fa-align-left" title="по левому краю" data-command="justifyLeft"></button>
-    <button class="btn fas fa-align-center" title="по центру" data-command="justifyCenter"></button>
-    <button class="btn fas fa-align-right" title="по правому краю" data-command="justifyRight"></button>
-    <button class="btn fas fa-align-justify" title="по ширине" data-command="justifyFull"></button>
-    <select class="toolbar-font">
-        <option selected="selected" disabled="disabled">Шрифт</option>
-        <option value="arial">Arial</option>
-        <option value="Courier New">Courier New</option>
-        <option value="georgia">Georgia</option>
-        <option value="impact">Impact</option>
-        <option value="roboto">Tahoma</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="verdana">Verdana</option>
-    </select>
-    <select class="toolbar-size">
-        <option selected="selected" disabled="disabled">Размер</option>
-        <option value="1">10px</option>
-        <option value="2">12px</option>
-        <option value="3">14px</option>
-        <option value="4">16px</option>
-        <option value="5">18px</option>
-        <option value="6">21px</option>
-        <option value="7">26px</option>
-    </select>
-    <span>Цвет</span> <input class="toolbar-color" type="color" value="#ff0000">
-    <span>Фон</span> <input class="toolbar-bg" type="color" value="#ffff00">
-    <br>
-    <button class="btn fas fa-undo" title="Отмена" data-command="undo"></button>
-    <button class="btn fas fa-redo" title="Повтор" data-command="redo"></button>
+    <button class="btn fas fa-align-left" title="по левому краю" data-command="justifyLeft" data-type="align"></button>
+    <button class="btn fas fa-align-center" title="по центру" data-command="justifyCenter" data-type="align"></button>
+    <button class="btn fas fa-align-right" title="по правому краю" data-command="justifyRight"
+        data-type="align"></button>
+    <button class="btn fas fa-align-justify" title="по ширине" data-command="justifyFull" data-type="align"></button>
+    <div class="btn_dropdown">
+        <button class="btn openDropdownBtn" data-type="fz" title="Размер шрифта">Размер шрифта</span><i
+                class="fa-solid fa-caret-down"></i></button>
+        <ul class="btn_dropdown_list">
+            <li>
+                <button data-type="12">12px</button>
+            </li>
+            <li>
+                <button data-type="14">14px</button>
+            </li>
+            <li>
+                <button data-type="16">16px</button>
+            </li>
+            <li>
+                <button data-type="18">18px</button>
+            </li>
+            <li>
+                <button data-type="20">20px</button>
+            </li>
+            <li>
+                <button data-type="22">22px</button>
+            </li>
+            <li>
+                <button data-type="24">24px</button>
+            </li>
+            <li>
+                <button data-type="28">28px</button>
+            </li>
+            <li>
+                <button data-type="34">34px</button>
+            </li>
+        </ul>
+    </div>
+    <button class="btn fas fa-font colorPickerBtn" title="цвет текста">
+        <input type="color" id="color" value="#000000" list="commons" class="colorPicker" data-type="font"/>
+        <datalist id="commons">
+            <option>#000000</option>
+            <option>#2a2a2a</option>
+            <option>#636363</option>
+            <option>#ffffff</option>
+            <option>#ffdda9</option>
+            <option>#391484</option>
+            <option>#282f42</option>
+            <option>#594d6d</option>
+
+        </datalist>
+    </button>
+    <button class="btn fas fa-fill-drip colorPickerBtn" title="цвет фона">
+        <input type="color" id="back-color" value="#ffffff" class="colorPicker" list="background" data-type="background" />
+        <datalist id="background">
+            <option>#000000</option>
+            <option>#2a2a2a</option>
+            <option>#636363</option>
+            <option>#ffffff</option>
+            <option>#ffdda9</option>
+            <option>#391484</option>
+            <option>#282f42</option>
+            <option>#594d6d</option>
+        </datalist>
+    </button>
 </div>

@@ -59,26 +59,26 @@
         &[data-style="left"] {
             display: inline-flex;
             float: left;
-            margin-right: 30px;
-            width: 50%;
+            margin-right: 30px !important;
+            width: 50% !important;
 
             @include setTabletStyles {
                 float: none;
-                width: 100%;
-                margin: 0;
+                width: 100% !important;
+                margin: 0 !important;
             }
         }
 
         &[data-style="right"] {
             display: inline-flex;
             float: right;
-            margin-left: 30px;
-            width: 50%;
+            margin-left: 30px !important;
+            width: 50% !important;
 
             @include setTabletStyles {
                 float: none;
-                width: 100%;
-                margin: 0;
+                width: 100% !important;
+                margin: 0 !important;
             }
         }
     }
@@ -97,7 +97,7 @@
 
 }
 
-.admin__CM__editableItem__content,
+.admin__CM__editableItem__content[data-id="body"],
 .article {
     section {
         padding: 50px 0;
@@ -107,5 +107,21 @@
     h2,
     h3 {
         padding-bottom: 50px;
+    }
+}
+
+$fontSizes: 12, 14, 16, 18, 20, 22, 24, 28, 34;
+
+@each $size in $fontSizes {
+    .fz-#{$size} {
+        font-size: #{$size}px;
+
+        @include setTabletStyles {
+            @if $size == 36 {
+                font-size: 24px;
+            } @else {
+                font-size: 14px;
+            }
+        }
     }
 }

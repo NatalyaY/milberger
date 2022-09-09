@@ -96,8 +96,6 @@ module.exports = function (app) {
         };
         res.render('admin', { user, data, tab: `${page}_tab` });
     });
-
-    // app.post("/admin/upload", upload.single("previewImg"),
     //     (req, res, next) => {
 
     //         if (req.file) {
