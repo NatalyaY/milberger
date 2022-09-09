@@ -332,6 +332,10 @@ export class EditableToolbar {
         } else {
             node = window.getSelection().getRangeAt(0).startContainer;
         };
+
+        if ((node.tagName != 'P') && (node.tagName != 'LI') && (node.tagName != 'H1') && (node.tagName != 'H2') && (node.tagName != 'H3')) {
+            node = node.closest('p') || node.closest('li') || node.closest('h1') || node.closest('h2') || node.closest('h3');
+        };
         return node;
     }
 
@@ -346,7 +350,7 @@ export class EditableToolbar {
         if ((node.tagName == 'P') && (childs.length == 1) && (node.parentNode.tagName != 'SECTION') && (!node.parentNode.classList.contains('col')) && (this.selector != 'div')) {
             node = node.parentNode;
         };
-        const content = node.textContent;
+        let content = [...node.children].find(child => child.tagName == 'P') ? node.textContent : node.innerHTML;
         this.handleBlockTypes({ node, innerText: content });
     }
 
@@ -391,11 +395,11 @@ export class EditableToolbar {
         document.execCommand('styleWithCSS', false, true);
         document.execCommand('fontSize', false, size);
         document.execCommand('styleWithCSS', false, false);
-        const spans = Array.from(this.editable.querySelectorAll('span[style^="font-size"]'));
-        if (spans.length) {
-            spans.forEach((span) => {
-                span.removeAttribute('style');
-                span.className = `fz-${e.currentTarget.dataset.type}`;
+        const styledElems = Array.from(this.editable.querySelectorAll('[style^="font-size"]'));
+        if (styledElems.length) {
+            styledElems.forEach((elem) => {
+                elem.removeAttribute('style');
+                elem.className = `fz-${e.currentTarget.dataset.type}`;
             });
         };
     }
@@ -431,6 +435,11 @@ export class EditableToolbar {
 
         this.setCaretPos(imgWrap);
         document.execCommand('insertImage', false, url);
+
+        if (!imgWrap.querySelector("img")) {
+            const img = curElem.querySelector("img");
+            imgWrap.prepend(img);
+        }
 
         this.setCaretPos(curElem);
         this.imgAppendWidgetAndListeners(imgWrap);
@@ -644,6 +653,10 @@ export class EditableToolbar {
         let index;
         if (img) {
             index = [...node.childNodes].findIndex(el => el == img);
+            if (index == -1) {
+                node = img.parentNode;
+                index = [...node.childNodes].findIndex(el => el == img);
+            };
             child = node.childNodes[index - 1] ? node.childNodes[index - 1] : node.childNodes[index];
             length = child.textContent ? child.textContent.length : 0;
         };
@@ -791,11 +804,12 @@ export class EditableToolbar {
                         imgWrap.classList.add('imgWrap');
                         imgWrap.append(...img.children);
                         imgWrap.setAttribute('contenteditable', 'false');
-                        if ((img.parentNode.tagName != 'DIV') && (img.parentNode.tagName != 'SECTION')) {
-                            if (img.parentNode.textContent.trim() == '') {
-                                img.parentNode.replaceWith(imgWrap);
+                        const parent = img.closest('p') || img.closest('li') || img.closest('h1') || img.closest('h2') || img.closest('h3');
+                        if ((parent.tagName != 'DIV') && (parent.tagName != 'SECTION')) {
+                            if (parent.textContent.trim() == '') {
+                                parent.replaceWith(imgWrap);
                             } else {
-                                img.parentNode.before(imgWrap);
+                                parent.before(imgWrap);
                             };
                             img.remove();
                         } else {
