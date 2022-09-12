@@ -38,18 +38,23 @@
 
 .editbtns {
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 18px;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: white;
+    padding-top: 10px;
 
     button {
         position: relative;
         cursor: pointer;
-        margin-bottom: -10px;
+        margin-top: -10px;
 
-        &[data-command="insertUnorderedList"].active,
-        &[data-command="insertOrderedList"].active {
-            background-color: transparentize($color, $amount: .5);
-        }
+        // &[data-command="insertUnorderedList"].active,
+        // &[data-command="insertOrderedList"].active {
+        //     background-color: transparentize($color, $amount: .5);
+        // }
 
         &.colorPickerBtn {
             padding-top: 0;
@@ -60,6 +65,10 @@
                 left: 8px;
                 top: 11px;
             }
+        }
+
+        &[data-type="margin"] {
+            transform: rotate(90deg);
         }
     }
 
@@ -80,7 +89,7 @@
     .btn_dropdown {
         position: relative;
         display: flex;
-        margin-bottom: -10px;
+        margin-top: -10px;
 
         .dropdown_result {
             margin-right: 10px;
@@ -252,9 +261,9 @@
             gap: 10px;
             padding: 5px;
             position: absolute;
-            top: -15px;
+            bottom: -15px;
             left: 50%;
-            transform: translate(-50%, -100%);
+            transform: translate(-50%, 100%);
             flex-direction: row;
             visibility: hidden;
             opacity: 0;

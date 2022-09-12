@@ -534,8 +534,10 @@ function handleConstructorBtns() {
         const checkboxes = [...constructor.querySelectorAll('.admin__CM__checkbox')];
 
         const formData = new FormData();
+        let files;
 
         if (fileField.files.length) {
+            files = true;
             const previewFile = fileField.files[0];
             const previewImgBlob = fileField.parentNode.querySelector('.admin__CM__img').src;
             formData.append("previewImg", previewFile, previewImgBlob);
@@ -544,141 +546,145 @@ function handleConstructorBtns() {
         if (Object.keys(toolbars).length) {
             Object.keys(toolbars).forEach((key) => {
                 Object.keys(toolbars[key].files).forEach((file) => {
+                    files = true;
                     formData.append(key, toolbars[key].files[file], file);
                 });
             });
         };
 
-        const res = await fetch('/admin/upload', {
-            method: 'POST',
-            body: formData,
-        });
-
-        if (res.status === 200) {
-            const json = await res.json();
-
-            const images = document.querySelectorAll('.admin__CM__editableItem img');
-            images.forEach((image) => {
-                const editableItem = image.closest('.admin__CM__editableItem');
-                if (editableItem) {
-                    const fieldname = image.closest('.admin__CM__editableItem').dataset.type;
-                    const filename = image.src.split('/')[image.src.split('/').length - 1];
-                    if (json[fieldname] && json[fieldname][filename]) {
-                        image.src = json[fieldname][filename];
-                        if (fieldname == "previewImg") {
-                            fileField.dataset.value = json[fieldname][filename];
-                        }
-                    };
-                };
+        if (files) {
+            const res = await fetch('/admin/upload', {
+                method: 'POST',
+                body: formData,
             });
 
-            const editables = [...fields].reduce((obj, cur) => {
-                let value;
+            if (res.status === 200) {
+                const json = await res.json();
 
-                if (cur.tagName == 'INPUT') {
-                    if (cur.type == 'file') {
-                        value = cur.dataset.value;
-                    } else if (cur.classList.contains('character__input')) {
-                        const addtext = cur.parentNode.querySelector('.character__input__addText');
-                        value = {
-                            value: cur.value,
-                            icon: cur.dataset.id.split('-')[1],
-                            addText: addtext.innerHTML,
+                const images = document.querySelectorAll('.admin__CM__editableItem img');
+                images.forEach((image) => {
+                    const editableItem = image.closest('.admin__CM__editableItem');
+                    if (editableItem) {
+                        const fieldname = image.closest('.admin__CM__editableItem').dataset.type;
+                        const filename = image.src.split('/')[image.src.split('/').length - 1];
+                        if (json[fieldname] && json[fieldname][filename]) {
+                            image.src = json[fieldname][filename];
+                            if (fieldname == "previewImg") {
+                                fileField.dataset.value = json[fieldname][filename];
+                            }
                         };
-                    } else {
-                        value = cur.value;
-                    }
-                } else {
-                    const widgets = cur.querySelectorAll('.widget');
-                    if (widgets.length) {
-                        [...widgets].forEach(widget => widget.remove());
                     };
-                    const contenteditables = cur.querySelectorAll('[contenteditable]');
-                    if (contenteditables.length) {
-                        [...contenteditables].forEach(contenteditable => contenteditable.removeAttribute('contenteditable'));
-                    };
-                    const floatImgBlocks = cur.querySelectorAll('.imageFloat');
-                    if (floatImgBlocks.length) {
-                        [...floatImgBlocks].forEach((block) =>{
-                            const images = block.querySelectorAll('.imgWrap');
-                            if (!images.length) {
-                                block.classList.remove('.imageFloat');
-                                return;
-                            } else {
-                                for (let i = 0; i < images.length; i++) {
-                                    const modifier = i == 0 ? 0 : 3;
-                                    const img = [...block.children].find(child => child === images[i]);
-                                    img.style.order = i + 2 + modifier;
-                                    const imgNextChild = img.nextElementSibling;
-                                    imgNextChild.style.order = i + 1 + modifier;
-                                    let nextSibling = imgNextChild.nextElementSibling;
-                                    while (nextSibling && !nextSibling.classList?.contains('imgWrap')) {
-                                        nextSibling.style.order = i + 3 + modifier;
-                                        nextSibling = nextSibling.nextElementSibling;
-                                    };
-                                }
-                            };
-                        });
-                    }
-                    value = cur.innerHTML;
-                };
+                });
+            } else {
+                const json = await res.json();
+            };
+        }
 
-                if (cur.classList.contains('character__input')) {
-                    if (!obj.characters) {
-                        obj.characters = {};
-                        obj.characters[cur.dataset.id] = value;
-                    } else {
-                        obj.characters[cur.dataset.id] = value;
+        const editables = [...fields].reduce((obj, cur) => {
+            let value;
+
+            if (cur.tagName == 'INPUT') {
+                if (cur.type == 'file') {
+                    value = cur.dataset.value;
+                } else if (cur.classList.contains('character__input')) {
+                    const addtext = cur.parentNode.querySelector('.character__input__addText');
+                    value = {
+                        value: cur.value,
+                        icon: cur.dataset.id.split('-')[1],
+                        addText: addtext.innerHTML,
                     };
                 } else {
-                    obj[cur.dataset.id] = value;
+                    value = cur.value;
+                };
+            } else {
+                const widgets = cur.querySelectorAll('.widget');
+                if (widgets.length) {
+                    [...widgets].forEach(widget => widget.remove());
+                };
+                const contenteditables = cur.querySelectorAll('[contenteditable]');
+                if (contenteditables.length) {
+                    [...contenteditables].forEach(contenteditable => contenteditable.removeAttribute('contenteditable'));
+                };
+                const floatImgBlocks = cur.querySelectorAll('.imageFloat');
+                if (floatImgBlocks.length) {
+                    [...floatImgBlocks].forEach((block) => {
+                        const images = block.querySelectorAll('.imgWrap');
+                        if (!images.length) {
+                            block.classList.remove('.imageFloat');
+                            return;
+                        } else {
+                            for (let i = 0; i < images.length; i++) {
+                                const modifier = i == 0 ? 0 : 3;
+                                const img = [...block.children].find(child => child === images[i]);
+                                img.style.order = i + 2 + modifier;
+                                const imgNextChild = img.nextElementSibling;
+                                imgNextChild.style.order = i + 1 + modifier;
+                                let nextSibling = imgNextChild.nextElementSibling;
+                                while (nextSibling && !nextSibling.classList?.contains('imgWrap')) {
+                                    nextSibling.style.order = i + 3 + modifier;
+                                    nextSibling = nextSibling.nextElementSibling;
+                                };
+                            }
+                        };
+                    });
+                }
+                value = cur.innerHTML;
+            };
+
+            if (cur.classList.contains('character__input')) {
+                if (!obj.characters) {
+                    obj.characters = {};
+                    obj.characters[cur.dataset.id] = value;
+                } else {
+                    obj.characters[cur.dataset.id] = value;
+                };
+            } else {
+                obj[cur.dataset.id] = value;
+            };
+            return obj;
+        }, {});
+
+        function findCheckedInputs(arr, type) {
+            return arr.reduce((obj, cur) => {
+                let name = cur.name;
+                if (!obj[name]) {
+                    const checked = arr.find((el) => ((el.name == name) && (el.checked)));
+                    let value = false;
+                    if (checked) {
+                        if (type == 'radio') {
+                            value = checked.value;
+                        } else {
+                            value = true;
+                        };
+                    };
+                    obj[name] = value;
                 };
                 return obj;
             }, {});
-
-            function findCheckedInputs(arr, type) {
-                return arr.reduce((obj, cur) => {
-                    let name = cur.name;
-                    if (!obj[name]) {
-                        const checked = arr.find((el) => ((el.name == name) && (el.checked)));
-                        let value = false;
-                        if (checked) {
-                            if (type == 'radio') {
-                                value = checked.value;
-                            } else {
-                                value = true;
-                            };
-                        };
-                        obj[name] = value;
-                    };
-                    return obj;
-                }, {});
-            };
-
-            const checkedRadios = findCheckedInputs(radios, 'radio');
-            const checkedCheckoxes = findCheckedInputs(checkboxes, 'checkbox');
-
-            const req = {
-                data: Object.assign(checkedRadios, editables, checkedCheckoxes),
-            };
-
-            let msg;
-
-            if (constructor.dataset.id) {
-                req._id = constructor.dataset.id;
-                if (constructor.dataset.originid) {
-                    req.originid = constructor.dataset.originid;
-                };
-                req.op = 'update';
-                msg = 'Редактирование';
-            } else {
-                req.op = 'insert';
-                msg = 'Сохранение';
-            };
-            wsSend(req, callbackWithPopup(msg));
-        } else {
-            const json = await res.json();
         };
+
+        const checkedRadios = findCheckedInputs(radios, 'radio');
+        const checkedCheckoxes = findCheckedInputs(checkboxes, 'checkbox');
+
+        const req = {
+            data: Object.assign(checkedRadios, editables, checkedCheckoxes),
+        };
+
+        let msg;
+
+        if (constructor.dataset.id) {
+            req._id = constructor.dataset.id;
+            if (constructor.dataset.originid) {
+                req.originid = constructor.dataset.originid;
+            };
+            req.op = 'update';
+            msg = 'Редактирование';
+        } else {
+            req.op = 'insert';
+            msg = 'Сохранение';
+        };
+
+        wsSend(req, callbackWithPopup(msg));
     });
 }
 

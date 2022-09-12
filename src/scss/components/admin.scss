@@ -19,6 +19,7 @@ $red: rgba(199, 142, 142, 0.69);
 .admin-body {
     display: flex;
     flex-direction: column;
+    overflow: unset;
 }
 
 .admin__section {

@@ -15,7 +15,7 @@ export class EditableToolbar {
         const ols = this.editable.querySelectorAll('ol');
         this.linkBtn = el.querySelector('[data-type="link"]');
         this.colorBtns = el.querySelectorAll('.colorPicker');
-
+        this.marginBtn = el.querySelector('[data-type="margin"]');
 
         [...images].forEach((image) => {
             if (image) {
@@ -76,8 +76,6 @@ export class EditableToolbar {
                         };
                         curElem.remove();
 
-                        // if ((elem.tagName == 'P') && (elem.textContent)) return;
-
                         while (!elem.classList.contains('admin__CM__editableItem__content')) {
                             if ((elem.tagName != 'DIV') && (elem.tagName != 'SECTION') && (elem.textContent)) {
                                 this.setCaretPos(elem);
@@ -100,6 +98,10 @@ export class EditableToolbar {
                                 const parent = elem.parentNode;
                                 elem.remove();
                                 elem = parent;
+                                if (elem.classList.contains('admin__CM__editableItem__content')) {
+                                    this.setCaretPos(elem.lastChild);
+                                    break;
+                                };
                             } else {
                                 this.setCaretPos(childs[childs.length - 1]);
                                 break;
@@ -116,45 +118,41 @@ export class EditableToolbar {
             };
             if (e.keyCode === 13) {
                 let curNode = this.getCurrentNode();
-
-                if (curNode.tagName == 'P') {
-                    if (this.selector != 'p') {
-                        this.selector = 'p';
-                        this.renderChangesInDropdown();
-                    };
-                    return;
-                };
                 e.preventDefault();
                 this.selector = 'p';
                 this.saveSel();
                 this.renderChangesInDropdown();
                 const nodes = curNode.childNodes;
-                const endContainer = this.savedRange.endContainer;
+                let endContainer = this.savedRange.endContainer;
                 const endSelection = this.savedRange.endOffset;
-                const index = [...nodes].findIndex((node) => node == endContainer);
-                const text = endContainer.textContent ? endContainer.textContent.slice(endSelection) : '';
-                nodes[index].textContent = nodes[index].textContent.slice(0, nodes[index].textContent.length - text.length);
+                let text = endContainer.textContent ? endContainer.textContent.trim().slice(endSelection) : '';
+                text = text.trim();
+                endContainer.textContent = endContainer.textContent.slice(0, endContainer.textContent.length - text.length);
+                let index = [...nodes].findIndex((node) => node == endContainer);
 
-                const ulBtn = this.toolbar.querySelector('[data-command="insertUnorderedList"]');
-                const olBtn = this.toolbar.querySelector('[data-command="insertOrderedList"]');
-                let createLi = ulBtn.classList.contains('active') || olBtn.classList.contains('active');
-
-                const p = (createLi) ? document.createElement('li') : document.createElement('p');
-                if (text) {
-                    p.append(text);
-                } else {
-                    p.append(document.createElement('br'));
+                if (index == -1) {
+                    while (endContainer.parentNode != curNode) {
+                        endContainer = endContainer.parentNode;
+                    };
+                    index = [...nodes].findIndex((node) => node == endContainer);
                 };
+
+                const p = (curNode.tagName == 'LI') ? document.createElement('li') : document.createElement('p');
+
                 const nodesToInsert = [...nodes].slice(index);
+
                 nodesToInsert.forEach((node) => {
-                    if (node != endContainer) {
+                    if ((node != endContainer)&&(node.tagName != 'BR')) {
                         p.append(node);
                     };
                 });
 
-                if (curNode.tagName == 'SPAN') {
-                    curNode = curNode.parentNode;
+                if (text) {
+                    p.prepend(text);
+                } else if (!p.childElementCount) {
+                    p.append(document.createElement('br'));
                 };
+
                 curNode.after(p);
                 this.setCaretPos(p);
             };
@@ -165,8 +163,9 @@ export class EditableToolbar {
         this.handleDropdowns(this.dropdowns);
         this.imgBtn.addEventListener('input', this.addImg);
         this.linkBtn.addEventListener('click', this.addLink);
+        this.marginBtn.addEventListener('click', this.addMargin);
         [...this.colorBtns].forEach((btn) => {
-            btn.addEventListener('input', this.handleColorBtns);
+            btn.addEventListener('change', this.handleColorBtns);
         })
 
         return this;
@@ -207,28 +206,12 @@ export class EditableToolbar {
                 const command = e.currentTarget.dataset.command;
                 const curElem = this.getCurrentNode();
                 if ((command == 'insertUnorderedList') || (command == 'insertOrderedList')) {
-                    const anotherCommand = (command == 'insertUnorderedList') ? "insertOrderedList" : "insertUnorderedList";
-                    const anotherListBtn = this.toolbar.querySelector(`[data-command="${anotherCommand}"]`);
                     if (curElem.tagName == 'LI') {
-                        e.currentTarget.classList.remove('active');
-                        anotherListBtn.removeAttribute('disabled');
-                        const p = document.createElement('p');
-                        p.append(...curElem.childNodes);
-                        if (!p.textContent) {
-                            p.append(document.createElement('br'));
-                        };
-                        curElem.parentNode.after(p);
-                        if (curElem.parentNode.childElementCount == 1) {
-                            curElem.parentNode.remove();
-                        } else {
-                            curElem.remove();
-                        }
-                        this.setCaretPos(p);
                         return;
                     } else {
                         e.currentTarget.classList.add('active');
-                        anotherListBtn.setAttribute('disabled', 'true');
-                        if ((curElem.previousSibling) && (curElem.previousSibling.tagName == 'UL') || (curElem.tagName == 'OL')) {
+                        if ((curElem.previousSibling?.tagName == 'UL') || (curElem.previousSibling?.tagName == 'OL')||
+                            (curElem.nextSibling?.tagName == 'UL') || (curElem.nextSibling?.tagName == 'OL')) {
                             document.execCommand(command, false, null);
                             return;
                         };
@@ -239,7 +222,7 @@ export class EditableToolbar {
                         list.append(...btns);
                         this.setCaretPos(list);
                         return;
-                    }
+                    };
                 };
                 if ((e.currentTarget.dataset.type == "align") && (curElem.classList?.contains('imgWrap'))) {
                     switch (command) {
@@ -274,7 +257,8 @@ export class EditableToolbar {
 
             dropdownBtns.forEach((btn) => {
                 btn.addEventListener('click', (e) => {
-                    if (e.currentTarget.dataset.type == this.selector) {
+                    const curElem = this.getCurrentNode();
+                    if ((e.currentTarget.dataset.type == this.selector) && (curElem.tagName.toLowerCase() == this.selector)) {
                         dropdownList.classList.toggle('visible');
                         return;
                     };
@@ -333,7 +317,7 @@ export class EditableToolbar {
             node = window.getSelection().getRangeAt(0).startContainer;
         };
 
-        if ((node.tagName != 'P') && (node.tagName != 'LI') && (node.tagName != 'H1') && (node.tagName != 'H2') && (node.tagName != 'H3')) {
+        if ((node.tagName != 'P') && (node.tagName != 'LI') && (node.tagName != 'H1') && (node.tagName != 'H2') && (node.tagName != 'H3') && (!node.classList?.contains('imgWrap'))) {
             node = node.closest('p') || node.closest('li') || node.closest('h1') || node.closest('h2') || node.closest('h3');
         };
         return node;
@@ -350,7 +334,7 @@ export class EditableToolbar {
         if ((node.tagName == 'P') && (childs.length == 1) && (node.parentNode.tagName != 'SECTION') && (!node.parentNode.classList.contains('col')) && (this.selector != 'div')) {
             node = node.parentNode;
         };
-        let content = [...node.children].find(child => child.tagName == 'P') ? node.textContent : node.innerHTML;
+        let content = [...node.children].find(child => child.tagName == 'P') ? node.textContent : node.textContent ? node.innerHTML : '';
         this.handleBlockTypes({ node, innerText: content });
     }
 
@@ -395,10 +379,10 @@ export class EditableToolbar {
         document.execCommand('styleWithCSS', false, true);
         document.execCommand('fontSize', false, size);
         document.execCommand('styleWithCSS', false, false);
-        const styledElems = Array.from(this.editable.querySelectorAll('[style^="font-size"]'));
+        const styledElems = Array.from(this.editable.querySelectorAll('[style*="font-size"]'));
         if (styledElems.length) {
             styledElems.forEach((elem) => {
-                elem.removeAttribute('style');
+                elem.style.fontSize = '';
                 elem.className = `fz-${e.currentTarget.dataset.type}`;
             });
         };
@@ -428,7 +412,7 @@ export class EditableToolbar {
         const curElem = this.getCurrentNode();
 
         if ((window.getSelection().getRangeAt(0).startContainer.tagName === 'BR') && (!window.getSelection().getRangeAt(0).startContainer.parentNode.textContent)) {
-            window.getSelection().getRangeAt(0).startContainer.parentNode.before(imgWrap);
+            window.getSelection().getRangeAt(0).startContainer.parentNode.prepend(imgWrap);
         } else {
             window.getSelection().getRangeAt(0).insertNode(imgWrap);
         };
@@ -501,7 +485,7 @@ export class EditableToolbar {
                     this.prevImgEl.append(...prevImgEl.childNodes);
                 };
                 prevImgEl.remove();
-            } else if ((prevImgEl.tagName != 'SECTION') && (prevImgEl.tagName != 'DIV')) {
+            } else if ((prevImgEl.tagName != 'SECTION') && (prevImgEl.tagName != 'DIV') && (prevImgEl.tagName != 'UL')&&(prevImgEl.tagName != 'OL')) {
                 prevImgEl.textContent = prevImgEl.textContent;
             };
 
@@ -571,6 +555,15 @@ export class EditableToolbar {
         document.body.appendChild(layer);
     }
 
+    addMargin = () => {
+        const curNode = this.getCurrentNode();
+        if (curNode.style.marginTop) {
+            curNode.style.marginTop = '';
+            return;
+        };
+        curNode.style.marginTop = "20px";
+    }
+
     handleBlockTypes = ({ node = '', innerText }) => {
         const elem = document.createElement(this.selector);
         let p, btns;
@@ -624,7 +617,7 @@ export class EditableToolbar {
         const selection = window.getSelection();
         let child, length;
         try {
-            child = node.firstChild;
+            child = node.firstChild || node;
             length = child.textContent ? child.textContent.length : 0;
         } catch (error) {
             console.log(child);
@@ -644,12 +637,13 @@ export class EditableToolbar {
             const textChild = findTextNode(child);
             if (textChild) {
                 child = textChild;
+                length = child.textContent.length;
             } else {
                 length = 0;
             };
         };
 
-        const img = node.querySelector('.imgWrap');
+        let img = node.nodeType == 3 ? null : node.querySelector('.imgWrap');
         let index;
         if (img) {
             index = [...node.childNodes].findIndex(el => el == img);
@@ -690,12 +684,15 @@ export class EditableToolbar {
     widgetInsertParagraph = (e) => {
         e.stopPropagation();
         const type = e.currentTarget.dataset.type;
-        const p = document.createElement('p');
-        p.innerHTML = '<br>';
         let div = e.currentTarget.parentNode;
-        if ((div.parentNode.tagName != 'DIV') && (div.parentNode.tagName != 'SECTION')) {
+        if ((div.parentNode.tagName != 'DIV') && (div.parentNode.tagName != 'SECTION') && (div.parentNode.tagName != 'UL') && (div.parentNode.tagName != 'OL')) {
             div = div.parentNode;
         };
+        let p = (div.closest('li') || div.closest('ul') || div.closest('ol'))&&(div.classList?.contains('imgWrap')) ? document.createElement('li') : document.createElement('p');
+        p.innerHTML = '<br>';
+        const ulBtn = this.toolbar.querySelector('[data-command="insertUnorderedList"]');
+        const olBtn = this.toolbar.querySelector('[data-command="insertOrderedList"]');
+        [ulBtn, olBtn].forEach(btn => btn.classList?.remove('active'));
         div[type](p);
         this.setCaretPos(p);
     }
@@ -798,6 +795,7 @@ export class EditableToolbar {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let img = e.currentTarget.closest('.imgWrap');
+                this.setCaretPos(img);
                 if (e.currentTarget.dataset.type != img.dataset.style) {
                     if ((img.dataset.style == 'inline') || (e.currentTarget.dataset.type == 'inline')) {
                         let imgWrap = (e.currentTarget.dataset.type == 'inline') ? document.createElement('span') : document.createElement('figure');
