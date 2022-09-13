@@ -3,11 +3,12 @@ import "./vendors/iframe_api";
 class Video {
     constructor({ containerId, videoId }) {
         this.videoFrame = new YT.Player(containerId, {
-            height: '120%',
+            height: '100%',
             width: '100%',
             videoId: videoId,
             playerVars: {
-                'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'showinfo': 0 },
+                'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0, 'showinfo': 0
+            },
             events: {
                 'onReady': this.onPlayerReady.bind(this),
             }
@@ -46,7 +47,11 @@ class Video {
     }
 }
 export function createPlayer(...players) {
-    window.onYouTubeIframeAPIReady = () => {
+    if (YT) {
         [...players].forEach((player) => new Video({ containerId: player.containerId, videoId: player.videoId }));
+    } else {
+        window.onYouTubeIframeAPIReady = () => {
+            [...players].forEach((player) => new Video({ containerId: player.containerId, videoId: player.videoId }));
+        };
     };
 }

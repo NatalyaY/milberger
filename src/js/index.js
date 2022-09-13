@@ -10,7 +10,7 @@ import _ from 'lodash';
 
 const forms = document.querySelectorAll('.form__container');
 
-function showMoreText (e) {
+function showMoreText(e) {
     e.preventDefault();
     const parentElem = e.target.closest('.hiddenTextContainer');
     const ellipsedText = parentElem.querySelectorAll('.hidden__content')[0];
@@ -47,7 +47,7 @@ function animate({ timing, draw, duration }) {
     });
 }
 
-function scrollTo (selector) {
+function scrollTo(selector) {
     const el = document.querySelector(`${selector}`);
     const scrollY = el.getBoundingClientRect().top + window.pageYOffset;
     const headerHeight = parseInt(getComputedStyle(document.querySelector('header.header')).height);
@@ -63,7 +63,20 @@ function scrollTo (selector) {
     })
 }
 
+function handleHash () {
+    const hash = window.location.hash;
+    if ("pushState" in history)
+        history.pushState('', document.title, window.location.pathname);
+    else {
+        window.location = window.location.origin + window.location.pathname;
+    };
+    if (hash) {
+        scrollTo(hash);
+    };
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
+    handleHash();
     await new RenderGallery('js-gallery__items').render();
     await new RenderProjects('js-projects').render();
     await new RenderArticles('js-articles').render();
@@ -71,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showMoreTextBtn = document.querySelectorAll('.moreLink');
     const showProjectBtns = document.querySelectorAll('.home__gallery__item__link');
     const navLinks = document.querySelectorAll('.nav__item__link');
-    const navHrefs = [...navLinks].map(link => link.getAttribute('href'));
+    const navHrefs = [...navLinks].map(link => link.getAttribute('href').slice(1));
 
     [...navLinks].forEach((link) => {
         link.addEventListener('click', (e) => {
@@ -79,7 +92,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const activeLink = [...navLinks].find(link => link.classList.contains('active'));
             activeLink.classList.remove('active');
             e.target.classList.add('active');
-            scrollTo(link.getAttribute('href'));
+            scrollTo(link.getAttribute('href').slice(1));
         })
     });
 
@@ -103,10 +116,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const target = entry.target.id;
-                const targetLink = [...navLinks].find(link => link.getAttribute('href') == `#${target}`);
+                const targetLink = [...navLinks].find(link => link.getAttribute('href').slice(1) == `#${target}`);
                 const activeLink = [...navLinks].find(link => link.classList.contains('active'));
-                activeLink.classList.remove('active');
-                targetLink.classList.add('active');
+                if (activeLink) {
+                    activeLink.classList.remove('active');
+                };
+                if (targetLink) {
+                    targetLink.classList.add('active');
+                };
             };
         });
     }, options)
@@ -116,11 +133,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         observer.observe(item);
     });
 
-    new Gallery({ buttons: true, autoplay: false, galery: '.home__gallery' });
+    new Gallery({ buttons: true, autoplay: true, galery: '.home__gallery' });
     new Gallery({ buttons: true, autoplay: false, hidePrevAtEnd: true, progress: true, galery: '.cost__form' });
     new Gallery({ buttons: true, autoplay: false, progress: true, galery: '.projects__content', multipleItems: true });
     new Range(".form__item__rangeContainer.rangeSize");
     new Range(".form__item__rangeContainer.rangeHeight");
     createPlayer({ containerId: "player", videoId: 'GVtwyuco3uc' });
-    [...showMoreTextBtn].forEach((btn) => btn.addEventListener("click", showMoreText ));
+    [...showMoreTextBtn].forEach((btn) => btn.addEventListener("click", showMoreText));
+
+    const videoBtns = document.querySelectorAll('.project__text__video');
+    [...videoBtns].forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.closest('.gallery__item').dataset.id;
+            let imgContainer = document.querySelector(`.project__img__Container[data-id="${id}"]`);
+            let img = imgContainer.querySelector('.project__image');
+            const tmpl = _.template(require('../templates/videoPopup.html'));
+            const compiled = tmpl({ title: e.currentTarget.dataset.title, img: img.src});
+            const wrap = document.createElement('div');
+            wrap.innerHTML = compiled;
+            document.body.append(...wrap.children);
+            const layer = document.querySelector('.layer');
+            const closeBtn = layer.querySelector('.popup_close');
+            [layer, closeBtn].forEach((el) => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if ((e.target != closeBtn) && (e.target.closest('.popup'))) {
+                        return;
+                    };
+                    layer.remove();
+                });
+            });
+            createPlayer({ containerId: "video", videoId: e.currentTarget.dataset.video });
+        });
+    })
 });

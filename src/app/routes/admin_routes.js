@@ -128,7 +128,6 @@ module.exports = function (app) {
             if (Object.keys(req.files).length) {
                 const newFiles = Object.keys(req.files).reduce((acc, filename) => {
                     acc[filename] = req.files[filename].reduce((acc, file) => {
-                        console.log(file);
                         const ext = path.extname(file.originalname).toLowerCase();
                         const fileName = file.filename;
                         const newName = `../img/uploads/${fileName}${ext}`;

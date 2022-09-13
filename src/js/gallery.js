@@ -36,6 +36,7 @@ export class Gallery {
             if (i == this.current) {
                 items.forEach((item) => {
                     item.dataset.position = 'current';
+                    item.style.zIndex = i + 51;
                 });
             } else if (i < this.current) {
                 items.forEach((item) => {
@@ -44,6 +45,7 @@ export class Gallery {
             } else {
                 items.forEach((item) => {
                     item.dataset.position = 'next';
+                    item.style.zIndex = this.itemsQty - i;
                 });
             };
         };

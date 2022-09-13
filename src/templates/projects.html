@@ -9,14 +9,13 @@
     <% for (let i=1; i <= count; i++) { %>
         <div class="gallery__item hiddenTextContainer" data-id="<%- i %>">
             <h3 class="project__text__heading bold"><%- items[i-1].title %></h3>
-            <p class="project__text__description"><%= items[i-1].visible %><span class="ellipsis hidden__content" data-enabled="1"><%= items[i-1].hidden %></span>
-            </p>
+            <div class="ellipsis hidden__content" data-enabled="1"><%= items[i-1].body %></div>
             <div class="project__text__buttons d-flex">
                 <a href="#" class="project__text__link moreLink project__text__more"><span class="downText">Читать
                         далее</span><span class="upText">Свернуть</span><img src="../img/icons/down.png" alt=""
                         class="more__icon"></a>
-                <a href="#" class="project__text__link project__text__video">Смотреть видео<br> о
-                    проекте</a>
+                <button class="project__text__link project__text__video" data-video="<%= items[i-1].video %>" data-title="<%- items[i-1].title %>">Смотреть видео<br> о
+                    проекте</button>
                 <a href="" class="project__text__link project__text__checkoutBtn btn--accent" title="Хочу так же">Хочу
                     так
                     же</a>
@@ -27,14 +26,14 @@
 <div class="project__img">
     <% for (let i=1; i <= count; i++) { %>
         <div class="gallery__item project__img__Container" data-id="<%- i %>">
-            <img src="<%- items[i-1].img %>" alt="<%- items[i-1].title %>" class="project__image">
+            <img src="<%- items[i-1].previewImg %>" alt="<%- items[i-1].title %>" class="project__image">
             <div class="project__characters d-flex">
-                <% for (let j=0; j < items[i-1].characters.length; j++) { %>
+                <% for (const key in items[i-1].characters) { %>
                     <div class="character">
                         <svg class="character__icon">
-                            <use xlink:href="<%- items[i-1].characters[j].icon %>">
+                            <use xlink:href="../img/icons/icons.svg#<%- items[i-1].characters[key].icon %>">
                         </svg>
-                        <p class="character__text"><%=items[i-1].characters[j].text%></p>
+                        <p class="character__text"><%= items[i-1].characters[key].value + ' ' + items[i-1].characters[key].addText %></p>
                     </div>
                     <% }; %>
             </div>

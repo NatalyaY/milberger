@@ -38,6 +38,10 @@
         }
     }
 
+    .col {
+        flex: 1 1 0;
+    }
+
     .imgWrap {
         border-radius: 32px;
         position: relative;
@@ -46,6 +50,7 @@
 
         align-items: center;
         justify-content: center;
+
 
         &[data-style="inline"] {
             display: inline-flex;
@@ -63,12 +68,6 @@
             max-width: 50% !important;
             width: 50%;
             aspect-ratio: 1;
-
-            @include setTabletStyles {
-                float: none;
-                width: 100% !important;
-                margin: 0 !important;
-            }
         }
 
         &[data-style="right"] {
@@ -78,11 +77,16 @@
             max-width: 50% !important;
             width: 50%;
             aspect-ratio: 1;
+        }
 
+        &:not([data-style="inline"]) {
             @include setTabletStyles {
                 float: none;
-                width: 100% !important;
-                margin: 0 !important;
+                width: calc(100% + 2 * var(--horizontalPadding)) !important;
+                margin: 20px 0 20px calc(var(--horizontalPadding)*-1) !important;
+                // margin-left: calc(var(--horizontalPadding)*-1);
+                max-width: unset !important;
+                border-radius: 0;
             }
         }
     }
@@ -116,8 +120,24 @@
         padding-bottom: 50px;
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
         padding-bottom: 50px;
+        @include setTabletStyles {
+            text-align: left !important;
+            padding-bottom: 20px;
+        }
+    }
+}
+
+.article {
+    section:first-of-type {
+        padding-top: 150px;
+
+        @include setTabletStyles {
+            padding-top: 80px;
+        }
     }
 }
 
@@ -128,7 +148,7 @@ $fontSizes: 12, 14, 16, 18, 20, 22, 24, 28, 34;
         font-size: #{$size}px;
 
         @include setTabletStyles {
-            @if $size ==36 {
+            @if $size ==34 {
                 font-size: 24px;
             }
 

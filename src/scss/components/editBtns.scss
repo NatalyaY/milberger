@@ -51,11 +51,6 @@
         cursor: pointer;
         margin-top: -10px;
 
-        // &[data-command="insertUnorderedList"].active,
-        // &[data-command="insertOrderedList"].active {
-        //     background-color: transparentize($color, $amount: .5);
-        // }
-
         &.colorPickerBtn {
             padding-top: 0;
             padding-bottom: 0;
@@ -219,7 +214,6 @@
     }
 
     .imgWrap {
-        position: relative;
         transition: border .2s;
         @include widgetBtns;
         border: 2px solid transparent;
@@ -261,13 +255,14 @@
             gap: 10px;
             padding: 5px;
             position: absolute;
-            bottom: -15px;
+            bottom: 0;
             left: 50%;
-            transform: translate(-50%, 100%);
             flex-direction: row;
             visibility: hidden;
             opacity: 0;
             transition: .2s;
+            transform: translate(-50%, 0%);
+            z-index: 10;
 
             &:before {
                 content: "";
@@ -350,6 +345,11 @@
             & .widget-style {
                 visibility: visible;
                 opacity: 1;
+            }
+
+            & .widget-style {
+                bottom: -15px;
+                transform: translate(-50%, 100%);
             }
         }
     }

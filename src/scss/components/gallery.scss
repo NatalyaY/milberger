@@ -1,7 +1,7 @@
 @use '../variables' as *;
 @use '../helpers' as *;
 
-$gallery__items: 5;
+$gallery__items: 6;
 
 %nav-btn {
     width: 56px;
@@ -48,10 +48,37 @@ $gallery__items: 5;
         size: cover;
     }
 
+    &::before,
+    .home__gallery__itemImg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: inherit;
+    }
+
+    &::before {
+        content: "";
+    }
+
+    .home__gallery__itemImg {
+        object-fit: cover;
+    }
+
     &[data-position="current"] {
         height: 100%;
         top: 0;
         left: 0;
+
+        &::before {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0) 269px, rgba(0, 0, 0, 0.7) 100%);
+            z-index: 10;
+
+            @include setTabletStyles {
+                background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+            }
+        }
 
         @include setTabletStyles {
             top: 50px;
@@ -63,6 +90,11 @@ $gallery__items: 5;
         left: 48.15%;
         height: 475px;
 
+        &::before {
+            background: linear-gradient(180deg, rgba(57, 20, 132, 0.7) 269px, rgba(57, 20, 132, 0.7) 100%);
+            z-index: 100;
+        }
+
         @include setTabletStyles {
             top: 0;
             left: 50%;
@@ -71,8 +103,8 @@ $gallery__items: 5;
             width: 89.557%;
         }
 
-        & * {
-            visibility: hidden;
+        & *:not(.home__gallery__itemImg) {
+            visibility: hidden;;
         }
     }
 
@@ -81,30 +113,11 @@ $gallery__items: 5;
     }
 }
 
-@for $i from 1 through $gallery__items {
-
-    .home__gallery__item[data-position="current"][data-id="#{$i}"] {
-        z-index: #{$i+50};
-        background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 269px, rgba(0, 0, 0, 0.7) 100%),
-        url(../img/home__gallery/#{$i}.jpg);
-
-        @include setTabletStyles {
-            background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%),
-            url(../img/home__gallery/#{$i}.jpg);
-        }
-    }
-
-    .home__gallery__item[data-position="next"][data-id="#{$i}"] {
-        z-index: #{$gallery__items - $i + 1};
-        background-image: linear-gradient(180deg, rgba(57, 20, 132, 0.7) 269px, rgba(57, 20, 132, 0.7) 100%),
-        url(../img/home__gallery/#{$i}.jpg);
-    }
-}
-
 .home__gallery__item__heading {
     font-size: 26px;
     color: $accent;
     font-weight: bold;
+    z-index: 10;
 
     @include setTabletStyles {
         font-size: 18px;
@@ -114,10 +127,15 @@ $gallery__items: 5;
 .home__gallery__item__description {
     @extend %font18to12;
     margin-bottom: 10px;
+    max-height: 2.5em;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
 }
 
 .home__gallery__item__link {
     font-size: 18px;
+    z-index: 10;
 }
 
 .home__gallery__nav {

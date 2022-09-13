@@ -2,17 +2,17 @@ const articleRoutes = require('./articles_routes');
 const formRoutes = require('./form_routes');
 const authRoutes = require('./auth_routes');
 const adminRoutes = require('./admin_routes');
+const projectsRoutes = require('./projects_routes');
 
 
 const createError = require('http-errors');
-
-
 
 module.exports = function (app) {
     articleRoutes(app);
     formRoutes(app);
     authRoutes(app);
     adminRoutes(app);
+    projectsRoutes(app);
 
     app.use(function (req, res, next) {
         const err = createError(404, 'wtf');

@@ -1,13 +1,13 @@
 <% for (let i=0; i < items.length; i++) { %>
-    <article class="article hiddenTextContainer">
+    <article class="article-preview hiddenTextContainer">
         <div class="article__ImgWrap">
-            <img src="<%- items[i].img %>" alt="<%- items[i].title %>" class="article__img">
+            <img src="<%- items[i].previewImg %>" alt="<%- items[i].title %>" class="article__img">
         </div>
         <header>
             <h4 class="article__heading bold"><%- items[i].title %></h4>
         </header>
         <main class="article__main hidden__content" data-enabled="1">
-            <p><%- items[i].description %></p>
+            <p><%= items[i].description %></p>
         </main>
         <footer class="article__footer d-flex j-between a-center">
             <a href="#" class="article__footer__moreLink moreLink">
@@ -17,6 +17,6 @@
             </a>
             <span class="article__footer__date"><%- items[i].date %></span>
         </footer>
-        <a href="/article-<%- items[i].id %>" class="article__link"></a>
+        <a href="/article-<%- items[i].UUID %>" class="article__link"></a>
     </article>
 <% }; %>

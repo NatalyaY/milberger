@@ -12,9 +12,15 @@ module.exports = function (app) {
     });
 
     app.get('/article-:id', async (req, res, next) => {
-        const query = { id: req.params.id };
+        const query = { UUID: parseInt(req.params.id) };
         const article = await dbArticles.find({query});
         if (!article) return next(createError(400, `Article '${req.params.id}' not found`));
-        res.render("article", { title: article.title, shortdescription: article.shortdesription, body: article.body });
+        res.render("article", { title: article.title, body: article.body });
+    });
+    
+    app.get('/articles', async (req, res, next) => {
+        const query = {};
+        const articles = await dbArticles.find({ query, findAll: true });
+        res.json({ count: articles.length, items: articles});
     });
 };
