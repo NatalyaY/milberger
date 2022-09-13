@@ -49,7 +49,6 @@ export class EditableToolbar {
             const data = e.clipboardData.getData('text/plain');
             const normalizedData = data.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             const dataStrings = normalizedData.split('\n');
-            console.log(dataStrings);
             dataStrings.forEach((string, i) => {
                 if(string == '') return;
                 if (i && node) {
@@ -427,6 +426,8 @@ export class EditableToolbar {
             return;
         };
         const url = URL.createObjectURL(file);
+        e.currentTarget.type = '';
+        e.currentTarget.type = "file";
         this.files[url] = file;
 
         let curElem = this.getCurrentNode();

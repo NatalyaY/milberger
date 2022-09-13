@@ -5,18 +5,12 @@ import { Form } from './form.js';
 import { createPlayer } from "./video.js";
 import { RenderGallery, RenderProjects, RenderArticles } from "./renderItems.js";
 import { setSubmitFn } from './submitForm.js';
+import { showMoreText } from './showMoreText.js';
+
 import _ from 'lodash';
 
 
 const forms = document.querySelectorAll('.form__container');
-
-function showMoreText(e) {
-    e.preventDefault();
-    const parentElem = e.target.closest('.hiddenTextContainer');
-    const ellipsedText = parentElem.querySelectorAll('.hidden__content')[0];
-    ellipsedText.dataset.enabled = parseInt(ellipsedText.dataset.enabled) ? 0 : 1;
-    e.currentTarget.classList.toggle('up');
-};
 
 function slideToProject(e) {
     e.preventDefault();
@@ -85,6 +79,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const showProjectBtns = document.querySelectorAll('.home__gallery__item__link');
     const navLinks = document.querySelectorAll('.nav__item__link');
     const navHrefs = [...navLinks].map(link => link.getAttribute('href').slice(1));
+    const costBtn = document.querySelector('.home__btn');
+    const galleryBtn = document.querySelector('.home__gallery__link[href="#cost"]');
 
     [...navLinks].forEach((link) => {
         link.addEventListener('click', (e) => {
@@ -93,6 +89,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             activeLink.classList.remove('active');
             e.target.classList.add('active');
             scrollTo(link.getAttribute('href').slice(1));
+        })
+    });
+
+    [costBtn, galleryBtn].forEach((link) => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollTo(link.getAttribute('href'));
         })
     });
 
@@ -165,5 +168,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             createPlayer({ containerId: "video", videoId: e.currentTarget.dataset.video });
         });
-    })
+    });
 });
+

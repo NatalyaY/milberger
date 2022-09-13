@@ -4,4 +4,22 @@
         <%= require('../templates/article.html') %>
     </div>
 </section>
+<section>
+    <%= require('../templates/benefits.html') %>
+</section>
+<section id="articles">
+    <div class="container__content">
+        <h2 class="articles__heading">Другие <span class="bold-color">статьи</span></h2>
+        <hr class="normal__hr">
+        <article class="articles__container">
+            <div id="js-articles"></div>
+        </article>
+    </div>
+    <svg class="shape">
+        <use xlink:href="../img/icons/icons.svg#shape">
+    </svg>
+</section>
+<section id="discuss">
+    <%= require('../templates/discussForm.html') %>
+</section>
 <%= require('../templates/footer.html') %>

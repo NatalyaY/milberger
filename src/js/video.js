@@ -47,7 +47,7 @@ class Video {
     }
 }
 export function createPlayer(...players) {
-    if (YT) {
+    if (window.YT) {
         [...players].forEach((player) => new Video({ containerId: player.containerId, videoId: player.videoId }));
     } else {
         window.onYouTubeIframeAPIReady = () => {

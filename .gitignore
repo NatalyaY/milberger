@@ -1,3 +1,11 @@
 node_modules
-dist/
+<<<<<<< HEAD
+dist/css
+dist/js
+dist/*.html
 img/
+=======
+img
+dist
+test articles
+>>>>>>> parent of 76646eb (fix gitignore)

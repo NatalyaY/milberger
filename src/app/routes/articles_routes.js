@@ -13,8 +13,9 @@ module.exports = function (app) {
     app.get('/article-:id', async (req, res, next) => {
         const query = { UUID: parseInt(req.params.id) };
         const article = await dbArticles.find({query});
+        const articles = await dbArticles.find({ query: { publish: 'true' }, findAll: true });
         if (!article) return next(createError(400, `Article '${req.params.id}' not found`));
-        res.render("article", { title: article.title, body: article.body });
+        res.render("article", { title: article.title, body: article.body, items: articles, count: articles.length });
     });
     
     app.get('/articles', async (req, res, next) => {

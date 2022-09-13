@@ -47,23 +47,46 @@ button {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 30px;
+
+        @include setTabletStyles {
+            gap: 10px;
+        }
 
         .admin__header__logoContainer {
             flex: 1;
             @include commonFlex;
+            justify-content: center;
+
+            @include setTabletStyles {
+                flex: 0;
+            }
 
             .logoIcon {
                 font-size: 38px;
+
+                @include setTabletStyles {
+                    font-size: 18px;
+                }
             }
 
             .admin__header__logo {
                 font-size: 22px;
                 font-weight: bold;
+
+                @include setTabletStyles {
+                    display: none;
+                }
             }
 
             .admin__header__logoText {
                 font-size: 22px;
+
+                @include setTabletStyles {
+                    display: none;
+                }
             }
         }
 
@@ -75,9 +98,12 @@ button {
             gap: 15px;
 
             &__button {
-                // @include commonBordered(transparentize($light-gray, .5));
                 text-align: left;
                 color: white;
+            }
+
+            @include setTabletStyles {
+                order: 3;
             }
         }
 
@@ -87,16 +113,29 @@ button {
 
             &__icon {
                 font-size: 36px;
+
+                @include setTabletStyles {
+                    font-size: 16px;
+                }
+
             }
 
             &__email {
                 font-size: 16px;
+
+                @include setTabletStyles {
+                    font-size: 14px;
+                }
             }
         }
 
         .admin__header__logout {
             color: $red;
             font-size: 16px;
+
+            @include setTabletStyles {
+                font-size: 14px;
+            }
         }
     }
 }

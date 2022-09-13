@@ -579,7 +579,7 @@ function handleConstructorBtns() {
             if (res.status === 200) {
                 const json = await res.json();
 
-                const images = document.querySelectorAll('.admin__CM__editableItem img');
+                const images = document.querySelectorAll('.admin__CM__editableItem img[src^="blob"]');
                 images.forEach((image) => {
                     const editableItem = image.closest('.admin__CM__editableItem');
                     if (editableItem) {

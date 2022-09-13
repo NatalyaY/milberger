@@ -79,16 +79,6 @@
             aspect-ratio: 1;
         }
 
-        &:not([data-style="inline"]) {
-            @include setTabletStyles {
-                float: none;
-                width: calc(100% + 2 * var(--horizontalPadding)) !important;
-                margin: 20px 0 20px calc(var(--horizontalPadding)*-1) !important;
-                // margin-left: calc(var(--horizontalPadding)*-1);
-                max-width: unset !important;
-                border-radius: 0;
-            }
-        }
     }
 
     img {
@@ -124,6 +114,7 @@
     h2,
     h3 {
         padding-bottom: 50px;
+
         @include setTabletStyles {
             text-align: left !important;
             padding-bottom: 20px;
@@ -137,6 +128,16 @@
 
         @include setTabletStyles {
             padding-top: 80px;
+        }
+    }
+
+    .imgWrap:not([data-style="inline"]) {
+        @include setTabletStyles {
+            float: none;
+            width: calc(100% + 2 * var(--horizontalPadding)) !important;
+            margin: 20px 0 20px calc(var(--horizontalPadding)*-1) !important;
+            max-width: unset !important;
+            border-radius: 0;
         }
     }
 }
