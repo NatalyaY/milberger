@@ -3,9 +3,7 @@ const AuthService = require('../auth/authService');
 const attachUser = require('../auth/attachUser');
 const db = require('../db.connect');
 const dbUsers = db.setColl('users');
-const fs = require("fs");
 const path = require('path');
-const createError = require('http-errors');
 const multer = require('multer');
 
 function fileFilter(req, file, cb) {
@@ -142,9 +140,6 @@ module.exports = function (app) {
             } else {
                 res
                     .status(403)
-                    .json({
-                        message: 'invalid extension'
-                    })
             };
         }
     );

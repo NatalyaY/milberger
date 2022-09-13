@@ -1,7 +1,7 @@
 <% for (let i=0; i < items.length; i++) { %>
     <article class="article-preview hiddenTextContainer">
         <div class="article__ImgWrap">
-            <img src="<%- items[i].previewImg %>" alt="<%- items[i].title %>" class="article__img">
+            <img src="<%- items[i].previewImg || '../img/placeholder.png' %>" alt="<%- items[i].title %>" class="article__img">
         </div>
         <header>
             <h4 class="article__heading bold"><%- items[i].title %></h4>

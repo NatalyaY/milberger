@@ -17834,11 +17834,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Gallery": () => (/* binding */ Gallery)
 /* harmony export */ });
 
+/* It's a gallery that can be controlled by buttons, can be set to autoplay, can have multiple items
+per slide, can have a progress bar, and can hide the previous button at the end of the gallery */
 
 class Gallery {
     constructor({ buttons = false, autoplay = false, galery = '.home__gallery', hidePrevAtEnd = false, progress = false, multipleItems = false} = {}) {
         this.gallery = document.querySelector(`${galery}`);
         this.galleryItems = Array.from(this.gallery.querySelectorAll('.gallery__item'));
+        /* It's grouping the gallery items by their data-id attribute. */
         if (multipleItems) {
             this.multipleItems = Object.values(this.galleryItems.reduce((acc, item) => {
                 if (!acc[item.dataset.id]) {
@@ -17884,6 +17887,8 @@ class Gallery {
                 });
             };
         };
+        /* It's disabling the previous button at the beginning of the gallery and disabling the next
+        button at the end of the gallery. */
         if (this.buttons) {
             switch (this.current) {
                 case 0:
@@ -17900,11 +17905,14 @@ class Gallery {
                     break;
             }
         };
+        /* It's adding the class 'active' to the current progress item and removing it from the
+        previous one. */
         if (this.progressItems) {
             const currentProgressItem = this.progressItems.find((item) => item.classList.contains('active'));
             if (currentProgressItem) currentProgressItem.classList.remove('active');
             this.progressItems[this.current].classList.add('active');
         };
+        /* It's adding the class 'next' to the first slide when the last slide is the current slide. */
         if (this.current + 1 == this.itemsQty) {
             const items = this.multipleItems ? this.multipleItems[0] : [this.galleryItems[0]];
             items.forEach((item) => {
@@ -17930,6 +17938,10 @@ class Gallery {
         };
     }
 
+    /**
+     * If the current slide is not the last slide, then go to the next slide, otherwise go to the first
+     * slide.
+     */
     async autoplay() {
         this.setStopOnHover();
 
@@ -17948,6 +17960,10 @@ class Gallery {
         let timer = setTimeout(play, 1000);
     }
 
+    /**
+     * If the mouse is not hovering over the gallery, then the gallery will continue to slide. If the
+     * mouse is hovering over the gallery, then the gallery will stop sliding.
+     */
     setStopOnHover() {
         const mouseleave = (e) => {
             if ([...this.gallery.children].includes(e.relatedTarget)) return;
@@ -18556,7 +18572,7 @@ module.exports = __webpack_require__.p + "img/icons/video.png";
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<% for (let i=0; i < items.length; i++) { %>\r\n    <article class=\"article-preview hiddenTextContainer\">\r\n        <div class=\"article__ImgWrap\">\r\n            <img src=\"<%- items[i].previewImg %>\" alt=\"<%- items[i].title %>\" class=\"article__img\">\r\n        </div>\r\n        <header>\r\n            <h4 class=\"article__heading bold\"><%- items[i].title %></h4>\r\n        </header>\r\n        <main class=\"article__main hidden__content\" data-enabled=\"1\">\r\n            <p><%= items[i].description %></p>\r\n        </main>\r\n        <footer class=\"article__footer d-flex j-between a-center\">\r\n            <a href=\"#\" class=\"article__footer__moreLink moreLink\">\r\n                <span class=\"downText\">Подробнее</span>\r\n                <span class=\"upText\">Свернуть</span>\r\n                <img src=\"../img/icons/down.png\" alt=\"\" class=\"more__icon\">\r\n            </a>\r\n            <span class=\"article__footer__date\"><%- items[i].date %></span>\r\n        </footer>\r\n        <a href=\"/article-<%- items[i].UUID %>\" class=\"article__link\"></a>\r\n    </article>\r\n<% }; %>";
+module.exports = "<% for (let i=0; i < items.length; i++) { %>\r\n    <article class=\"article-preview hiddenTextContainer\">\r\n        <div class=\"article__ImgWrap\">\r\n            <img src=\"<%- items[i].previewImg || '../img/placeholder.png' %>\" alt=\"<%- items[i].title %>\" class=\"article__img\">\r\n        </div>\r\n        <header>\r\n            <h4 class=\"article__heading bold\"><%- items[i].title %></h4>\r\n        </header>\r\n        <main class=\"article__main hidden__content\" data-enabled=\"1\">\r\n            <p><%= items[i].description %></p>\r\n        </main>\r\n        <footer class=\"article__footer d-flex j-between a-center\">\r\n            <a href=\"#\" class=\"article__footer__moreLink moreLink\">\r\n                <span class=\"downText\">Подробнее</span>\r\n                <span class=\"upText\">Свернуть</span>\r\n                <img src=\"../img/icons/down.png\" alt=\"\" class=\"more__icon\">\r\n            </a>\r\n            <span class=\"article__footer__date\"><%- items[i].date %></span>\r\n        </footer>\r\n        <a href=\"/article-<%- items[i].UUID %>\" class=\"article__link\"></a>\r\n    </article>\r\n<% }; %>";
 
 /***/ }),
 
@@ -18567,7 +18583,7 @@ module.exports = "<% for (let i=0; i < items.length; i++) { %>\r\n    <article c
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<% for (let i = 0; i < items.length; i++) { %>\r\n    <article class=\"home__gallery__item gallery__item d-flex--col j-end\" data-id=\"<%-i+1%>\">\r\n        <img src=\"<%- items[i].previewImg %>\" alt=\"<%- items[i].title %>\" class=\"home__gallery__itemImg\">\r\n        <h3 class=\"home__gallery__item__heading\"><%- items[i].title %></h3>\r\n        <div class=\"home__gallery__item__description\"><%= items[i].body %></div>\r\n        <a href=\"#\" class=\"home__gallery__item__link\">Смотреть проект</a>\r\n    </article>\r\n<% }; %>";
+module.exports = "<% for (let i = 0; i < items.length; i++) { %>\r\n    <article class=\"home__gallery__item gallery__item d-flex--col j-end\" data-id=\"<%-i+1%>\">\r\n        <img src=\"<%- items[i].previewImg || '../img/placeholder.png' %>\" alt=\"<%- items[i].title %>\" class=\"home__gallery__itemImg\">\r\n        <h3 class=\"home__gallery__item__heading\"><%- items[i].title %></h3>\r\n        <div class=\"home__gallery__item__description\"><%= items[i].body %></div>\r\n        <a href=\"#\" class=\"home__gallery__item__link\">Смотреть проект</a>\r\n    </article>\r\n<% }; %>";
 
 /***/ }),
 
@@ -18589,7 +18605,7 @@ module.exports = "<div class=\"layer\">\r\n    <div class=\"popup\" data-type=\"
 /***/ ((module) => {
 
 "use strict";
-module.exports = "<div class=\"project__progress gallery__progress d-flex\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"progress__item gallery__progress__item d-flex--center\">\r\n            <%- i %>\r\n        </div>\r\n    <% }; %>\r\n</div>\r\n<div class=\"project__text\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"gallery__item hiddenTextContainer\" data-id=\"<%- i %>\">\r\n            <h3 class=\"project__text__heading bold\"><%- items[i-1].title %></h3>\r\n            <div class=\"ellipsis hidden__content\" data-enabled=\"1\"><%= items[i-1].body %></div>\r\n            <div class=\"project__text__buttons d-flex\">\r\n                <a href=\"#\" class=\"project__text__link moreLink project__text__more\"><span class=\"downText\">Читать\r\n                        далее</span><span class=\"upText\">Свернуть</span><img src=\"../img/icons/down.png\" alt=\"\"\r\n                        class=\"more__icon\"></a>\r\n                <button class=\"project__text__link project__text__video\" data-video=\"<%= items[i-1].video %>\" data-title=\"<%- items[i-1].title %>\">Смотреть видео<br> о\r\n                    проекте</button>\r\n                <a href=\"\" class=\"project__text__link project__text__checkoutBtn btn--accent\" title=\"Хочу так же\">Хочу\r\n                    так\r\n                    же</a>\r\n            </div>\r\n        </div>\r\n    <% }; %>\r\n</div>\r\n<div class=\"project__img\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"gallery__item project__img__Container\" data-id=\"<%- i %>\">\r\n            <img src=\"<%- items[i-1].previewImg %>\" alt=\"<%- items[i-1].title %>\" class=\"project__image\">\r\n            <div class=\"project__characters d-flex\">\r\n                <% for (const key in items[i-1].characters) { %>\r\n                    <div class=\"character\">\r\n                        <svg class=\"character__icon\">\r\n                            <use xlink:href=\"../img/icons/icons.svg#<%- items[i-1].characters[key].icon %>\">\r\n                        </svg>\r\n                        <p class=\"character__text\"><%= items[i-1].characters[key].value + ' ' + items[i-1].characters[key].addText %></p>\r\n                    </div>\r\n                    <% }; %>\r\n            </div>\r\n        </div>\r\n    <% }; %>\r\n    <div class=\"project__gallery__nav gallery__nav d-flex--center\">\r\n        <button class=\"project__nav-btn gallery__nav-btn btn--prev\"></button>\r\n        <button class=\"project__nav-btn gallery__nav-btn btn--next\"></button>\r\n    </div>\r\n</div>";
+module.exports = "<div class=\"project__progress gallery__progress d-flex\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"progress__item gallery__progress__item d-flex--center\">\r\n            <%- i %>\r\n        </div>\r\n    <% }; %>\r\n</div>\r\n<div class=\"project__text\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"gallery__item hiddenTextContainer\" data-id=\"<%- i %>\">\r\n            <h3 class=\"project__text__heading bold\"><%- items[i-1].title %></h3>\r\n            <div class=\"ellipsis hidden__content\" data-enabled=\"1\"><%= items[i-1].body %></div>\r\n            <div class=\"project__text__buttons d-flex\">\r\n                <a href=\"#\" class=\"project__text__link moreLink project__text__more\"><span class=\"downText\">Читать\r\n                        далее</span><span class=\"upText\">Свернуть</span><img src=\"../img/icons/down.png\" alt=\"\"\r\n                        class=\"more__icon\"></a>\r\n                <button class=\"project__text__link project__text__video\" data-video=\"<%= items[i-1].video %>\" data-title=\"<%- items[i-1].title %>\">Смотреть видео<br> о\r\n                    проекте</button>\r\n                <a href=\"\" class=\"project__text__link project__text__checkoutBtn btn--accent\" title=\"Хочу так же\">Хочу\r\n                    так\r\n                    же</a>\r\n            </div>\r\n        </div>\r\n    <% }; %>\r\n</div>\r\n<div class=\"project__img\">\r\n    <% for (let i=1; i <= count; i++) { %>\r\n        <div class=\"gallery__item project__img__Container\" data-id=\"<%- i %>\">\r\n            <img src=\"<%- items[i-1].previewImg || '../img/placeholder.png' %>\" alt=\"<%- items[i-1].title %>\" class=\"project__image\">\r\n            <div class=\"project__characters d-flex\">\r\n                <% for (const key in items[i-1].characters) { %>\r\n                    <div class=\"character\">\r\n                        <svg class=\"character__icon\">\r\n                            <use xlink:href=\"../img/icons/icons.svg#<%- items[i-1].characters[key].icon %>\">\r\n                        </svg>\r\n                        <p class=\"character__text\"><%= items[i-1].characters[key].value + ' ' + items[i-1].characters[key].addText %></p>\r\n                    </div>\r\n                    <% }; %>\r\n            </div>\r\n        </div>\r\n    <% }; %>\r\n    <div class=\"project__gallery__nav gallery__nav d-flex--center\">\r\n        <button class=\"project__nav-btn gallery__nav-btn btn--prev\"></button>\r\n        <button class=\"project__nav-btn gallery__nav-btn btn--next\"></button>\r\n    </div>\r\n</div>";
 
 /***/ }),
 

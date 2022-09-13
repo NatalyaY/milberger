@@ -1,9 +1,12 @@
 'use strict';
+/* It's a gallery that can be controlled by buttons, can be set to autoplay, can have multiple items
+per slide, can have a progress bar, and can hide the previous button at the end of the gallery */
 
 export class Gallery {
     constructor({ buttons = false, autoplay = false, galery = '.home__gallery', hidePrevAtEnd = false, progress = false, multipleItems = false} = {}) {
         this.gallery = document.querySelector(`${galery}`);
         this.galleryItems = Array.from(this.gallery.querySelectorAll('.gallery__item'));
+        /* It's grouping the gallery items by their data-id attribute. */
         if (multipleItems) {
             this.multipleItems = Object.values(this.galleryItems.reduce((acc, item) => {
                 if (!acc[item.dataset.id]) {
@@ -49,6 +52,8 @@ export class Gallery {
                 });
             };
         };
+        /* It's disabling the previous button at the beginning of the gallery and disabling the next
+        button at the end of the gallery. */
         if (this.buttons) {
             switch (this.current) {
                 case 0:
@@ -65,11 +70,14 @@ export class Gallery {
                     break;
             }
         };
+        /* It's adding the class 'active' to the current progress item and removing it from the
+        previous one. */
         if (this.progressItems) {
             const currentProgressItem = this.progressItems.find((item) => item.classList.contains('active'));
             if (currentProgressItem) currentProgressItem.classList.remove('active');
             this.progressItems[this.current].classList.add('active');
         };
+        /* It's adding the class 'next' to the first slide when the last slide is the current slide. */
         if (this.current + 1 == this.itemsQty) {
             const items = this.multipleItems ? this.multipleItems[0] : [this.galleryItems[0]];
             items.forEach((item) => {
@@ -95,6 +103,10 @@ export class Gallery {
         };
     }
 
+    /**
+     * If the current slide is not the last slide, then go to the next slide, otherwise go to the first
+     * slide.
+     */
     async autoplay() {
         this.setStopOnHover();
 
@@ -113,6 +125,10 @@ export class Gallery {
         let timer = setTimeout(play, 1000);
     }
 
+    /**
+     * If the mouse is not hovering over the gallery, then the gallery will continue to slide. If the
+     * mouse is hovering over the gallery, then the gallery will stop sliding.
+     */
     setStopOnHover() {
         const mouseleave = (e) => {
             if ([...this.gallery.children].includes(e.relatedTarget)) return;

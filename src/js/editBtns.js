@@ -1,5 +1,11 @@
 'use strict';
+import { openPopup } from './openPopup.js';
+
 export class EditableToolbar {
+    /**
+     * @param el - the toolbar element
+     * @returns The constructor returns the object that was created.
+     */
     constructor(el) {
         this.toolbar = el;
         this.editable = el.parentNode.querySelector('.admin__CM__editableItem__content');
@@ -412,6 +418,14 @@ export class EditableToolbar {
     addImg = (e) => {
         this.restoreSel();
         const file = e.currentTarget.files[0];
+        if (file.type.split('/')[0] != 'image') {
+            openPopup('Загрузить файл')({
+                err: {
+                    message: 'Пожалуйста, загрузите изображение.'
+                }
+            });
+            return;
+        };
         const url = URL.createObjectURL(file);
         this.files[url] = file;
 

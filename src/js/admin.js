@@ -5,13 +5,12 @@ import { adminTab } from './adminTabs.js';
 import { openPopup } from './openPopup.js';
 import { EditableToolbar } from './editBtns';
 
-
 const tab = document.querySelector('.admin__content__tab');
 const page = window.location.pathname.slice(1).split('/')[1];
 let tabHandler, socket;
 const toolbars = {};
-
 const callbaks = {};
+
 
 const headers = {
     users: 'пользователя',
@@ -230,6 +229,11 @@ const commonOptions = {
     page,
 };
 
+
+/**
+ * If the browser supports the history API, use it to remove the hash from the URL. Otherwise, use the
+ * location object to remove the hash from the URL
+ */
 function removeHash() {
     if ("pushState" in history)
         history.pushState('', document.title, window.location.pathname);
@@ -278,6 +282,7 @@ function handleTabBtns() {
     const galleryBtns = Array.from(document.querySelectorAll('.admin__content__item__checkbox'));
 
 
+    /* Adding event listeners to the buttons that are added to the DOM. */
     let observer = new MutationObserver((mutations) => {
         for (let mutation of mutations) {
             for (let node of mutation.addedNodes) {
@@ -308,6 +313,7 @@ function handleTabBtns() {
     });
 
     const items = document.querySelectorAll('.admin__content__items_list');
+    
     [...items].forEach((item) => {
         observer.observe(item, { childList: true, subtree: true });
     });
@@ -379,6 +385,10 @@ function deleteItem(e) {
     wsSend({ _id: item.dataset.id, op: 'delete' }, callbackWithPopup('Удаление'));
 }
 
+/**
+ * @param msg - The message to display in the popup
+ * @returns A function that takes a single argument, data.
+ */
 function callbackWithPopup(msg) {
     return function (data) {
         openPopup(msg)(data);
@@ -487,6 +497,7 @@ function handleConstructorBtns() {
             const parent = e.target.parentNode;
             const addTextField = parent.querySelector('.character__input__addText');
             const words = ["день", "дня", "дней"];
+            /* Selecting the correct  word variation. */
             const addText = words[(value % 100 > 4 && value % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(value % 10 < 5) ? Math.abs(value) % 10 : 5]] || 'дней';
             addTextField.innerText = addText;
         });
@@ -516,6 +527,13 @@ function handleConstructorBtns() {
     if (fileField) {
         fileField.addEventListener('input', (e) => {
             const file = e.target.files[0];
+            if (file.type.split('/')[0] != 'image') {
+                openPopup('Загрузить файл')({
+                        err: {
+                            message: 'Пожалуйста, загрузите изображение.'}
+                        });
+                return;
+            };
             const url = URL.createObjectURL(file);
             const img = e.target.parentNode.querySelector('.admin__CM__img');
             img.src = url;
@@ -572,11 +590,23 @@ function handleConstructorBtns() {
                             if (fieldname == "previewImg") {
                                 fileField.dataset.value = json[fieldname][filename];
                             }
+                        } else {
+                            let imgWrap = image.closest('.imgWrap');
+                            if (imgWrap) {
+                                imgWrap.remove();
+                            } else {
+                                image.remove();
+                            };
                         };
                     };
                 });
             } else {
-                const json = await res.json();
+                openPopup('Сохранить')({
+                    err: {
+                        message: res.statusText
+                    }
+                });
+                return;
             };
         }
 
@@ -644,6 +674,14 @@ function handleConstructorBtns() {
             return obj;
         }, {});
 
+        /**
+         * It takes an array of inputs and returns an object with the name of each input as a key and
+         * the value of the checked input as the value.
+         * @param arr - the array of inputs to search through
+         * @param type - 'radio' or 'checkbox'
+         * @returns An object with the name of the input as the key and the value of the input as the
+         * value.
+         */
         function findCheckedInputs(arr, type) {
             return arr.reduce((obj, cur) => {
                 let name = cur.name;
@@ -723,7 +761,6 @@ function getSocket() {
     };
 
     socket.onclose = function (e) {
-        //TODO: sometimes don't work, check e.codes
         if (e.code === 1006) {
             getSocket();
         };

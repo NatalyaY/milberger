@@ -2,7 +2,6 @@ const createError = require('http-errors');
 const dbArticles = require('../db.connect').setColl('articles');
 
 
-
 module.exports = function (app) {
 
     app.post('/articles', async (req, res) => {
@@ -19,7 +18,7 @@ module.exports = function (app) {
     });
     
     app.get('/articles', async (req, res, next) => {
-        const query = {};
+        const query = {publish: 'true'};
         const articles = await dbArticles.find({ query, findAll: true });
         res.json({ count: articles.length, items: articles});
     });

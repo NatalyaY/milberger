@@ -1,6 +1,6 @@
 <% for (let i = 0; i < items.length; i++) { %>
     <article class="home__gallery__item gallery__item d-flex--col j-end" data-id="<%-i+1%>">
-        <img src="<%- items[i].previewImg %>" alt="<%- items[i].title %>" class="home__gallery__itemImg">
+        <img src="<%- items[i].previewImg || '../img/placeholder.png' %>" alt="<%- items[i].title %>" class="home__gallery__itemImg">
         <h3 class="home__gallery__item__heading"><%- items[i].title %></h3>
         <div class="home__gallery__item__description"><%= items[i].body %></div>
         <a href="#" class="home__gallery__item__link">Смотреть проект</a>

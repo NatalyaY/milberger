@@ -1,6 +1,11 @@
 'use strict';
 
 export class Form {
+    /**
+     * This function is a constructor that takes a form container as an argument and then adds event
+     * listeners to the form's inputs and buttons.
+     * @param formContainer - the container of the form
+     */
     constructor(formContainer) {
         this.formContainer = formContainer;
         this.form = this.formContainer.querySelector("form");
@@ -35,6 +40,8 @@ export class Form {
         });
     }
 
+    /* A function that is called when the input is changed. It checks if the input is empty and if it
+    is, it adds a class to it. */
     watchInput = (e) => {
         let value = e.target.value;
 
@@ -56,7 +63,6 @@ export class Form {
                 input.dataset.notEmpty = '';
                 if (this.emptyRequiredInputs.includes(input)) this.setInvalidClasses(input);
             }
-
         });
     }
 
@@ -105,6 +111,8 @@ export class Form {
         }
     }
 
+    /* A function that returns an array of required inputs. It is used in the `validateOnSubmit`
+    function. */
     getRequiredInputs = () => {
         const name = this.fieldsets ? this.form.querySelector('fieldset[data-position="current"]').dataset.name : 'main';
         return this.requiredInputs[name];
@@ -118,6 +126,8 @@ export class Form {
         input.classList.remove("invalid");
     }
 
+    /* A function that is called when the form is submitted. It checks if there are any empty required
+    inputs and if there are, it prevents the form from being submitted. */
     validateOnSubmit = (e) => {
         const requiredInputs = this.getRequiredInputs();
         this.emptyRequiredInputs = requiredInputs.filter((input) => {

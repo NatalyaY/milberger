@@ -10,9 +10,9 @@ const expressWs = require('express-ws')(app);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(dist));
 app.use(cookieParser('sdhshd6esj'));
 
+app.use(express.static(dist));
 app.set('view engine', 'html');
 app.set('views', dist);
 
