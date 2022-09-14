@@ -17,7 +17,6 @@ class AuthService {
         if (existingUser) {
             throw createError(400, `Пользователь '${email}' уже существует`);
         };
-        console.log(oldEmail);
         if (oldEmail) {
             await db.setColl('verifyHashes').delete({ filter: { email: oldEmail } });
         };

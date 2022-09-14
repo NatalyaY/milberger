@@ -20,6 +20,4 @@ app.set('port', 3000);
 require('./routes')(app);
 
 
-app.listen(app.get('port'), function () {
-    console.log('Node App Started');
-});
+app.listen(app.get('port'));

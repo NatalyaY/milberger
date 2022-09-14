@@ -15,6 +15,7 @@ export class EditableToolbar {
         this.savedRange = null;
         this.selector = 'p';
         this.files = {};
+        this.removedFiles = [];
         const images = this.editable.querySelectorAll('img');
         const blocks = this.editable.querySelectorAll('div:not(.col)');
         const uls = this.editable.querySelectorAll('ul');
@@ -84,9 +85,12 @@ export class EditableToolbar {
                     } else {
                         e.preventDefault();
                         let elem = curElem.parentNode;
-                        if (curElem.classList.contains('.imgWrap')) {
+                        if (curElem.classList.contains('imgWrap')) {
                             const img = curElem.querySelector("img");
                             delete this.files[img.src];
+                            if (!~img.src.indexOf('blob')) {
+                                this.removedFiles.push(img.src);
+                            };
                         };
                         curElem.remove();
 

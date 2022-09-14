@@ -55,6 +55,11 @@ export class RenderProjects extends RenderData {
 export class RenderGallery extends RenderProjects {
     static url = "/projects";
     static tmpl = _.template(require('../templates/gallery_items.html'));
+
+    compile = () => {
+        const galleryItems = RenderProjects.json.items.filter(project => project.gallery);
+        return this.__proto__.constructor.tmpl({items: galleryItems});
+    }
 }
 
 export class RenderArticles extends RenderData {

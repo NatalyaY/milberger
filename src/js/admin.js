@@ -313,7 +313,7 @@ function handleTabBtns() {
     });
 
     const items = document.querySelectorAll('.admin__content__items_list');
-    
+
     [...items].forEach((item) => {
         observer.observe(item, { childList: true, subtree: true });
     });
@@ -529,9 +529,10 @@ function handleConstructorBtns() {
             const file = e.target.files[0];
             if (file.type.split('/')[0] != 'image') {
                 openPopup('Загрузить файл')({
-                        err: {
-                            message: 'Пожалуйста, загрузите изображение.'}
-                        });
+                    err: {
+                        message: 'Пожалуйста, загрузите изображение.'
+                    }
+                });
                 return;
             };
             const url = URL.createObjectURL(file);
@@ -552,7 +553,7 @@ function handleConstructorBtns() {
         const checkboxes = [...constructor.querySelectorAll('.admin__CM__checkbox')];
 
         const formData = new FormData();
-        let files;
+        let files, removedFiles = [], uploads = [];
 
         if (fileField.files.length) {
             files = true;
@@ -567,6 +568,7 @@ function handleConstructorBtns() {
                     files = true;
                     formData.append(key, toolbars[key].files[file], file);
                 });
+                removedFiles = removedFiles.concat(toolbars[key].removedFiles);
             });
         };
 
@@ -638,7 +640,8 @@ function handleConstructorBtns() {
                 const floatImgBlocks = cur.querySelectorAll('.imageFloat');
                 if (floatImgBlocks.length) {
                     [...floatImgBlocks].forEach((block) => {
-                        const images = block.querySelectorAll('.imgWrap');
+                        const images = Array.from(block.querySelectorAll('.imgWrap[data-style="right"]'))
+                            .concat(Array.from(block.querySelectorAll('.imgWrap[data-style="left"]')));
                         if (!images.length) {
                             block.classList.remove('.imageFloat');
                             return;
@@ -648,18 +651,22 @@ function handleConstructorBtns() {
                                 const img = [...block.children].find(child => child === images[i]);
                                 img.style.order = i + 2 + modifier;
                                 const imgNextChild = img.nextElementSibling;
-                                imgNextChild.style.order = i + 1 + modifier;
-                                let nextSibling = imgNextChild.nextElementSibling;
-                                while (nextSibling && !nextSibling.classList?.contains('imgWrap')) {
-                                    nextSibling.style.order = i + 3 + modifier;
-                                    nextSibling = nextSibling.nextElementSibling;
+                                if (imgNextChild) {
+                                    imgNextChild.style.order = i + 1 + modifier;
+                                    let nextSibling = imgNextChild.nextElementSibling;
+                                    while (nextSibling && !nextSibling.classList?.contains('imgWrap')) {
+                                        nextSibling.style.order = i + 3 + modifier;
+                                        nextSibling = nextSibling.nextElementSibling;
+                                    };
                                 };
+
                             }
                         };
                     });
-                }
+                };
                 value = cur.innerHTML;
             };
+
 
             if (cur.classList.contains('character__input')) {
                 if (!obj.characters) {
@@ -673,6 +680,9 @@ function handleConstructorBtns() {
             };
             return obj;
         }, {});
+
+        const images = document.querySelectorAll('.admin__CM__editableItem img');
+        images.forEach(img => uploads.push(img.src));
 
         /**
          * It takes an array of inputs and returns an object with the name of each input as a key and
@@ -705,7 +715,7 @@ function handleConstructorBtns() {
         const checkedCheckoxes = findCheckedInputs(checkboxes, 'checkbox');
 
         const req = {
-            data: Object.assign(checkedRadios, editables, checkedCheckoxes),
+            data: Object.assign(checkedRadios, editables, checkedCheckoxes, {uploads }, {removedFiles}),
         };
 
         let msg;

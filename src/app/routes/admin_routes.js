@@ -5,6 +5,8 @@ const db = require('../db.connect');
 const dbUsers = db.setColl('users');
 const path = require('path');
 const multer = require('multer');
+const fs = require('fs/promises');
+
 
 function fileFilter(req, file, cb) {
     const type = file.mimetype.split('/')[0];
@@ -94,34 +96,8 @@ module.exports = function (app) {
         };
         res.render('admin', { user, data, tab: `${page}_tab` });
     });
-    //     (req, res, next) => {
 
-    //         if (req.file) {
-    //             const ext = path.extname(req.file.originalname).toLowerCase();
-    //             const fileName = req.file.filename;
-    //             const tempPath = req.file.path;
-    //             const targetPath = path.join(__dirname, `../../../dist/img/uploads/${fileName}${ext}`);
-    //             fs.rename(tempPath, targetPath, err => {
-    //                 if (err) return next(createError(500, err));
-    //                 const originalName = req.file.originalname;
-    //                 const newName = `../img/uploads/${fileName}${ext}`;
-    //                 const newFileName = {};
-    //                 newFileName[originalName] = newName;
-    //                 res
-    //                     .status(200)
-    //                     .json(newFileName);
-    //             });
-    //         } else {
-    //             res
-    //                 .status(403)
-    //                 .json({
-    //                     message: fileName
-    //                 })
-    //         };
-    //     }
-    // );
-
-    app.post("/admin/upload", upload.fields([{ name: 'previewImg', maxCount: 1}, {name: 'body'}, {name: 'description'}]),
+    app.post("/admin/upload", upload.fields([{ name: 'previewImg', maxCount: 1 }, { name: 'body' }, { name: 'description' }]),
         (req, res, next) => {
             if (Object.keys(req.files).length) {
                 const newFiles = Object.keys(req.files).reduce((acc, filename) => {
@@ -163,6 +139,34 @@ module.exports = function (app) {
         let watchCursor, collection;
         const host = req.protocol + '://' + req.hostname + ':3000';
 
+        const removeUploads = async (id, type = 'uploads') => {
+            const doc = await db.setColl(collection).find({ query: { _id: new ObjectID(id) } });
+            let uploads = doc[type];
+            if (uploads) {
+                uploads = uploads.map(src => src.split('/')[src.split('/').length - 1]);
+                try {
+                    async function removeFile(fileName) {
+                        let path = `dist/img/uploads/${fileName}`;
+                        await fs.unlink(path);
+                    };
+                    const promises = uploads.map(removeFile);
+                    const results = await Promise.allSettled(promises);
+                    const rejected = results.filter(res => res.status == 'rejected');
+                    if (rejected.length) {
+                        rejected.forEach(result => {
+                            if (result.reason.errno == '-4058') {
+                                return;
+                            };
+                            throw result.reason;
+                        });
+                    };
+                } catch (error) {
+                    throw error;
+                };
+            };
+            return;
+        };
+
         switch (page) {
             case 'users':
                 watchCursor = await dbUsers.watch();
@@ -197,6 +201,7 @@ module.exports = function (app) {
                             const user = await dbUsers.find({ query: { _id: new ObjectID(req._id) } });
                             await db.setColl('verifyHashes').delete({ filter: { email: user.email } });
                         };
+                        await removeUploads(req._id, 'uploads');
                         await db.setColl(collection).delete({ filter: { _id: new ObjectID(req._id) } });
                     } catch (err) {
                         ws.send(JSON.stringify({ caller: req.caller, err }));
@@ -235,6 +240,13 @@ module.exports = function (app) {
                             ws.send(JSON.stringify({ caller: req.caller, err }));
                             return;
                         };
+                    };
+                    try {
+                        await removeUploads(req._id, 'removedFiles');
+                    } catch (error) {
+                        console.log(err.status + ': ' + err.message);
+                        ws.send(JSON.stringify({ caller: req.caller, err }));
+                        return;
                     };
                 }
 
