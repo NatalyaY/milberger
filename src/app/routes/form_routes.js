@@ -16,11 +16,12 @@ const formNames = {
 
 module.exports = function (app) {
     app.post('/form', async (req, res) => {
-        const body = Object.keys(req.body).reduce((acc, el) => {
+
+        const body = Object.keys(req.body.data).reduce((acc, el) => {
             let text = formNames[el] || el;
             acc[el] = {
                 text,
-                value: req.body[el]||'не указано',
+                value: req.body.data[el]||'не указано',
             };
             return acc;
         }, {});
