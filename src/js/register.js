@@ -6,7 +6,7 @@ import { setSubmitFn } from './submitForm.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.login__container');
+    const form = document.querySelector('.register__container');
     new Form(form);
 
     const replyPass = document.getElementById('password_reply');

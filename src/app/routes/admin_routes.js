@@ -204,7 +204,7 @@ module.exports = function (app) {
                         await removeUploads(req._id, 'uploads');
                         await db.setColl(collection).delete({ filter: { _id: new ObjectID(req._id) } });
                     } catch (err) {
-                        ws.send(JSON.stringify({ caller: req.caller, err }));
+                        ws.send(JSON.stringify({ caller: req.caller, err: { message: err.message } }));
                         return;
                     };
                 };
@@ -237,7 +237,7 @@ module.exports = function (app) {
                             };
                             await updateDoc({ req, collection });
                         } catch (err) {
-                            ws.send(JSON.stringify({ caller: req.caller, err }));
+                            ws.send(JSON.stringify({ caller: req.caller, err: { message: err.message } }));
                             return;
                         };
                     };
@@ -258,7 +258,7 @@ module.exports = function (app) {
                     await db.setColl(collection).insert({ docs: [req.data] });
                 } catch (err) {
                     console.log(err.status + ': ' + err.message);
-                    ws.send(JSON.stringify({ caller: req.caller, err }));
+                    ws.send(JSON.stringify({ caller: req.caller, err: { message: err.message } }));
                     return;
                 };
 

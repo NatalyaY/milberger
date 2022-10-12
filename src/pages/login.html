@@ -1,23 +1,23 @@
-
-    <%= require('../templates/admin/admin_header.html') %>
+<%= require('../templates/admin/admin_header.html') %>
     <section id="login">
         <div class="container__content login__container">
-            <form method="POST" class="login__form transparent d-flex--col j-end a-center" id="login__form" novalidate>
+            <form method="POST" class="form transparent d-flex--col j-end a-center" id="login__form" novalidate>
                 <h3 class="discuss__form__subheading bold">Вход</h3>
                 <div class="checkout__inputWrap">
-                    <input type="email" value="" name="email" placeholder="Email"
+                    <input type="email" value="" name="email" required placeholder="Email"
                         class="checkout__inputWrap__input email">
                 </div>
                 <div class="checkout__inputWrap">
-                    <input type="password" name="password" id="password" required class="checkout__inputWrap__input password"
-                        placeholder="Пароль" value="">
+                    <input type="password" name="password" id="password" required
+                        class="checkout__inputWrap__input password" placeholder="Пароль" value="">
                 </div>
-                <div class="checkout__btnWrap btn--accent" title="Получить каталог">
+                <div class="checkout__btnWrap btn--accent" title="Войти">
                     <input type="submit" value="Войти" class="btn--checkout">
                 </div>
+                <p class="err_msg"></p>
             </form>
         </div>
     </section>
-</body>
+    </body>
 
-</html>
+    </html>

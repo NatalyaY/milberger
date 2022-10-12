@@ -48,7 +48,6 @@ button {
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        justify-content: center;
         gap: 30px;
 
         @include setTabletStyles {
@@ -58,7 +57,6 @@ button {
         .admin__header__logoContainer {
             flex: 1;
             @include commonFlex;
-            justify-content: center;
 
             @include setTabletStyles {
                 flex: 0;

@@ -68,11 +68,11 @@ class AuthService {
     static Login = async (email, password) => {
         const userRecord = await dbUsers.find({ query: { email: email } });
         if (!userRecord) {
-            throw createError(400, `User with '${email}' not found`);
+            throw createError(400, `Пользователь '${email}' не найден`);
         } else {
             const correctPassword = await argon2.verify(userRecord.password, password);
             if (!correctPassword) {
-                throw createError(400, `Incorrect password`);
+                throw createError(400, `Неверный пароль`);
             };
         };
         return {

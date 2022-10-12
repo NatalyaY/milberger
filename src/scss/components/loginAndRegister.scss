@@ -7,22 +7,23 @@
     flex: 1;
     background-color: $text-accent;
     color: white;
-}
 
-.login__container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+    .container__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.login__form {
-    max-width: 400px;
-    margin-top: 100px;
-    width: 100%;
-    gap: 20px;
+    .form {
+        max-width: 400px;
+        margin-top: 100px;
+        width: 100%;
+        gap: 20px;
+        position: relative;
 
-    .checkout__inputWrap__input {
-        padding-left: 25px;
+        .checkout__inputWrap__input {
+            padding-left: 25px;
+        }
     }
 }
 

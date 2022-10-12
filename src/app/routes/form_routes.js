@@ -21,7 +21,7 @@ module.exports = function (app) {
             let text = formNames[el] || el;
             acc[el] = {
                 text,
-                value: req.body.data[el]||'не указано',
+                value: req.body.data[el] || 'не указано',
             };
             return acc;
         }, {});

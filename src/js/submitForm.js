@@ -1,7 +1,7 @@
 'use strict';
 import { openPopup } from './openPopup.js';
 
-export function setSubmitFn(form, action, fnOnsuccess = '') {
+export function setSubmitFn(form, action, fnOnsuccess = '', fnOnError = '') {
     return async function onSubmit(e) {
         const layer = document.createElement('div');
         layer.className = 'layer';
@@ -36,20 +36,30 @@ export function setSubmitFn(form, action, fnOnsuccess = '') {
 
         if (res.status === 200) {
             if (fnOnsuccess) {
-                fnOnsuccess();
+                fnOnsuccess(res);
             } else {
                 form.reset();
                 const reqFields = form.querySelectorAll('input[data-not-empty]');
-                [...reqFields].forEach(field => { field.dataset.notEmpty ='' });
+                [...reqFields].forEach(field => { field.dataset.notEmpty = '' });
                 openPopup('Ваша заявка была', 'успешно отправлена!')();
             }
         } else {
-            openPopup('Отправить заявку', 'не удалось')({err: {
-                message: res.statusText,
-            }});
+            const error = await res.json();
+            if (fnOnError) {
+                layer.remove();
+                fnOnError();
+            } else {
+                openPopup('Отправить', 'не удалось')({
+                    err: {
+                        message: error.message,
+                    }
+                });
+            };
             const msg = form.querySelector('.err_msg');
-            msg.innerText = `Ошибка. ${res.statusText}`;
-            msg.style.display = 'block';
+            if (msg) {
+                msg.innerText = `Ошибка. ${error.message}`;
+                msg.style.display = 'block';
+            };
         }
     }
 }

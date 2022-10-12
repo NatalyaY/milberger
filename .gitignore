@@ -5,6 +5,7 @@ dist/*
 dist/img/*
 !dist/img/uploads
 img/
+.env
 =======
 img
 dist/*

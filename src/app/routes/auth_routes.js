@@ -16,7 +16,7 @@ module.exports = function (app) {
         };
         let userRecord;
         try {
-            userRecord = await AuthService.Login(req.body.email, req.body.password);
+            userRecord = await AuthService.Login(req.body.data.email, req.body.data.password);
         } catch (error) {
             return next(error);
         };
@@ -42,7 +42,7 @@ module.exports = function (app) {
     app.post('/registration', async (req, res, next) => {
         let userRecord;
         try {
-            userRecord = await AuthService.SignUp(req.body.email, req.body.password);
+            userRecord = await AuthService.SignUp(req.body.data.email, req.body.data.password);
         } catch (error) {
             return next(error);
         };

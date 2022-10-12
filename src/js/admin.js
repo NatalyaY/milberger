@@ -555,7 +555,7 @@ function handleConstructorBtns() {
         const formData = new FormData();
         let files, removedFiles = [], uploads = [];
 
-        if (fileField.files.length) {
+        if (fileField && fileField.files.length) {
             files = true;
             const previewFile = fileField.files[0];
             const previewImgBlob = fileField.parentNode.querySelector('.admin__CM__img').src;
@@ -715,7 +715,12 @@ function handleConstructorBtns() {
         const checkedCheckoxes = findCheckedInputs(checkboxes, 'checkbox');
 
         const req = {
-            data: Object.assign(checkedRadios, editables, checkedCheckoxes, {uploads }, {removedFiles}),
+            data: Object.assign(checkedRadios, editables, checkedCheckoxes),
+        };
+
+        if (page != 'users') {
+            req.data.uploads = uploads;
+            req.data.removedFiles = removedFiles;
         };
 
         let msg;

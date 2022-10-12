@@ -61,8 +61,10 @@ const dbInsert = async (coll, { insertMany = false, docs, options = {} }) => {
             doc['statusCode'] = statusCodes[doc.status];
             doc["statusCodes"] = statusCodes;
         };
-        doc['date'] = convertDateToUTC(new Date);
-        doc['UUID'] = parseInt(Math.random() * 1000000);
+        if (coll != 'users') {
+            doc['date'] = convertDateToUTC(new Date);
+            doc['UUID'] = parseInt(Math.random() * 1000000);
+        };
     });
     const collection = database.collection(`${coll}`);
     const res = insertMany ? await collection.insertMany(docs, options) : await collection.insertOne(docs[0]);
