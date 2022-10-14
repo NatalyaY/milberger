@@ -61,6 +61,10 @@ export class adminTab {
                     elemToUpdate.querySelector(".admin__content__item__status").dataset.statuscode = updatedFields[key];
                     continue;
                 };
+                if (key == 'previewImg') {
+                    elemToUpdate.querySelector(`[data-type="${key}"]`).src = updatedFields[key];
+                    continue;
+                };
                 if (key == 'gallery') {
                     if (updatedFields[key]) {
                         elemToUpdate.querySelector(`[data-type="${key}"]`).setAttribute("checked", true);

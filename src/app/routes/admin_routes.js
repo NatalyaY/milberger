@@ -142,6 +142,12 @@ module.exports = function (app) {
         const removeUploads = async (id, type = 'uploads') => {
             const doc = await db.setColl(collection).find({ query: { _id: new ObjectID(id) } });
             let uploads = doc[type];
+            if (doc.originID && uploads.length) {
+                const originDoc = await db.setColl(collection).find({ query: { _id: new ObjectID(doc.originID) } });
+                if (originDoc.uploads?.length) {
+                    uploads = uploads.map(src => !originDoc.uploads.includes(src));
+                };
+            };
             if (uploads) {
                 uploads = uploads.map(src => src.split('/')[src.split('/').length - 1]);
                 try {
@@ -223,7 +229,8 @@ module.exports = function (app) {
                     const item = await db.setColl(collection).find({ query: { _id: new ObjectID(req._id) } });
 
                     if ((req.data.hasOwnProperty('publish')) && (item.publish != req.data.publish) && (!req.originid) && (req.data.publish == 'false')) {
-                        const doc = Object.assign({ originid: req._id, originUUID: item.UUID }, req.data);
+                        delete item._id;
+                        const doc = Object.assign(item, { originid: req._id, originUUID: item.UUID }, req.data);
                         try {
                             await db.setColl(collection).insert({ docs: [doc] });
                         } catch (err) {
