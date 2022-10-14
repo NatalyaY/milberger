@@ -33,3 +33,15 @@ Vanilla JS, Express server, MongoDB Atlas, SCCS, Webpack.
 :white_check_mark: MongoDB Atlas    
 :white_check_mark: multer, expressWs, nodemailer, lodash templates     
 :white_check_mark: Webpack     
+
+## Превью:   
+
+### Связанные слайдеры:   
+![milberger_sliders](https://user-images.githubusercontent.com/55657474/195798826-b4e25cb7-7d41-46c8-99c7-447789f1c4a2.gif)
+
+### Админ панель:   
+![milberger_admin](https://user-images.githubusercontent.com/55657474/195799220-cd7a3096-8dd5-4c0e-b358-80aa1ed5c817.gif)
+
+### Текстовый редактор и система черновиков:   
+![Текстовый редактор](https://user-images.githubusercontent.com/55657474/195799309-9937afac-d01b-4129-9c4f-66b821cb53fa.gif)
+
